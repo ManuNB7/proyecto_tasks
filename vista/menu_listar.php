@@ -38,7 +38,7 @@
                                 <p>Detalle: <?php echo htmlspecialchars($subtarea['detalle'], ENT_QUOTES); ?></p>
                                 <p>Fecha: <?php echo htmlspecialchars($subtarea['fecha'], ENT_QUOTES); ?></p>
                                 <!-- Botón para marcar como completada una subtarea -->
-                                <a href="index.php?controller=tarea&action=marcar_completada&idTarea=<?php echo $tarea['idTar']; ?>&idSub=<?php echo $subtarea['idSub']; ?>">Completar</a>
+                                <a href="index.php?controller=tarea&action=marcar_completada&idTarea=<?php echo $tarea['idTar']; ?>&idSub=<?php echo $subtarea['idSub']; ?>"class="boton-forms">Completar</a>
                             </div>
                         <?php } ?>
                     </div>

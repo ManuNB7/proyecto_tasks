@@ -53,9 +53,33 @@ body {
     margin-bottom: 50px;
     color: whitesmoke;
 }
+.contenedor-botones {
+    text-align: center;
+}
+
+.boton-forms {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #535C91;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+.boton-forms :hover{
+    background-color: #9290C3;
+}
+
 
 
 /*****************ESTILOS GENERALES*****************/
+a {
+    color: inherit; /* Heredar el color del texto del elemento padre */
+    text-decoration: none; /* Eliminar el subrayado de los enlaces */
+}
 
 h2 {
     text-align: center;

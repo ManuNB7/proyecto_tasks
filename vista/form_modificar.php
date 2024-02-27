@@ -12,6 +12,16 @@
     <textarea name="detalle"><?php echo htmlspecialchars($datos['detalle'], ENT_QUOTES); ?></textarea>
     <label for="fecha">Fecha:</label>
     <input type="date" name="fecha" value="<?php echo htmlspecialchars($datos['fecha'], ENT_QUOTES); ?>">
+    <?php if (!empty($datos['archivo'])) { ?>
+        <?php
+        $file_extension = pathinfo($datos['archivo'], PATHINFO_EXTENSION);
+        if (in_array($file_extension, array("jpg", "jpeg", "png", "gif"))) {
+            echo '<img src="' . $datos['archivo'] . '" alt="Imagen adjunta" class="img-small">';
+        } else {
+            echo '<p>Archivo: <a href="' . $datos['archivo'] . '" target="_blank">Descargar archivo</a></p>';
+        }
+        ?>
+    <?php } ?>
     <label for="archivo_principal">Archivo:</label>
     <input type="file" name="archivo_principal">
     <?php foreach ($datos['subtareas'] as $index => $subtarea): ?>
