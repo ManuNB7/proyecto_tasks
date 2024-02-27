@@ -62,39 +62,24 @@
                 $_GET["msg"] = "Error: Datos de tarea o subtareas no válidos.";
                 return;
             }
-            // File upload handling for the main task
+            // Manejo de la subida de archivos
             if (isset($_FILES['archivo_principal']) && $_FILES['archivo_principal']['error'] === UPLOAD_ERR_OK) {
                 $uploadedFile = $_FILES['archivo_principal'];
                 $carpeta_destino = 'img/archivos/';
                 $nombre_archivo = $carpeta_destino . basename($uploadedFile['name']);
                 
-                // Check if the file already exists in the destination directory
-                if (file_exists($nombre_archivo)) {
-                    // If the file already exists, generate a unique file name
-                    $nombre_archivo = $carpeta_destino . uniqid() . '_' . basename($uploadedFile['name']);
-                }
-                
-                // Move uploaded file to destination directory
+                // Mueve la imagen al directorio
                 if (move_uploaded_file($uploadedFile['tmp_name'], $nombre_archivo)) {
-                    // File uploaded successfully
                 } else {
-                    // Error handling if file upload fails
+                    // Controlar en caso de error
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error: No se pudo subir el archivo.";
                     return;
                 }
             } else {
-                // No file uploaded, check if a previous file exists
-                if (isset($_POST['nombre_archivo_anterior'])) {
-                    $nombre_archivo = $_POST['nombre_archivo_anterior'];
-                } else {
-                    $nombre_archivo = null;
-                }
+                $nombre_archivo = null;
             }
 
-
-        
-            // Insert the task data into the database, along with the file name
             $idTar = $this->modelo->insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo);
             
             if ($idTar) {
@@ -105,11 +90,6 @@
                 $_GET["msg"] = "Error al guardar la tarea. Por favor, inténtelo de nuevo.";
             }
         }
-        
-        
-        
-        
-        
         
         /********PROCESO MODIFICACIÓN********/
         public function modificar_tarea() {
@@ -139,34 +119,23 @@
                 $_GET["msg"] = "Error: Datos de tarea o subtareas no válidos.";
                 return;
             }
-            // File upload handling for the main task
+            // Manejo de la subida de archivos
             if (isset($_FILES['archivo_principal']) && $_FILES['archivo_principal']['error'] === UPLOAD_ERR_OK) {
                 $uploadedFile = $_FILES['archivo_principal'];
                 $carpeta_destino = 'img/archivos/';
                 $nombre_archivo = $carpeta_destino . basename($uploadedFile['name']);
                 
-                // Check if the file already exists in the destination directory
-                if (file_exists($nombre_archivo)) {
-                    // If the file already exists, generate a unique file name
-                    $nombre_archivo = $carpeta_destino . uniqid() . '_' . basename($uploadedFile['name']);
-                }
-                
-                // Move uploaded file to destination directory
+                // Mueve la imagen al directorio
                 if (move_uploaded_file($uploadedFile['tmp_name'], $nombre_archivo)) {
                     // File uploaded successfully
                 } else {
-                    // Error handling if file upload fails
+                    // Controla errores
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error: No se pudo subir el archivo.";
                     return;
                 }
             } else {
-                // No file uploaded, check if a previous file exists
-                if (isset($_POST['nombre_archivo_anterior'])) {
-                    $nombre_archivo = $_POST['nombre_archivo_anterior'];
-                } else {
-                    $nombre_archivo = null;
-                }
+                $nombre_archivo = null;
             }
         
             // Comprueba que haya subtareas

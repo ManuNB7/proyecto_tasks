@@ -11,12 +11,13 @@
     <nav class="menu">
     <h1 id="titulin">TASKS</h1>
     <a href='index.php?controller=menu' class="menu-contenido">Inicio</a>
-    <a href='index.php?controller=tarea' class="menu-contenido">Añadir tarea</a>
-    <a href='index.php?controller=tarea&action=listar_tarea' class="menu-contenido">Listar tarea</a>
+    <a href='index.php?controller=tarea' class="menu-contenido">Añadir tareas</a>
+    <a href='index.php?controller=tarea&action=listar_tarea' class="menu-contenido">Listar tareas</a>
     <a href='index.php?controller=tarea&action=listar_sugerencias' class="menu-contenido">Sugerencias</a>
     <a href='index.php?controller=tarea&action=listar_completadas' class="menu-contenido">Subtareas completadas</a>
     <?php if (!empty($_SESSION)) { ?>
        <a href="index.php?controller=sesion&action=cerrar_sesion" class="menu-contenido">Cerrar sesión</a>
     <?php } ?>
-    </nav>
+</nav>
+
 <main>

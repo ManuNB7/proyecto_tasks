@@ -22,30 +22,43 @@ body {
     padding: 20px;
     width: 200px;
     min-height: 100vh;
-    background-image: url('../img/lateral.jpg'); /* Establece la imagen de fondo */
-    background-position: center; /* Ajusta la posición de la imagen */
-    background-repeat: no-repeat; /* Ajusta la forma en que se repite la imagen */
+    background-image: url('../img/lateral.png');
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
 }
 
 .menu-contenido {
     padding: 10px;
     color: #fff;
-    font-size: x-large;
+    font-size: 18px;
     text-decoration: none;
     transition: background-color 0.3s ease;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 .menu-contenido:hover {
     background-color: #1B1A55;
-    color: whitesmoke;
+    border-color: #1B1A55;
 }
+
+#titulin {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+
+
 
 /*****************ESTILOS GENERALES*****************/
 
 #titulin{
     font-size: xx-large;
-    padding-bottom: 150px;
+    padding-bottom: 100px;
     color: whitesmoke;
 }
 

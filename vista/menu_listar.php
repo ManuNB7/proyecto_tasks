@@ -15,7 +15,7 @@
                 <?php if (!empty($tarea['archivo'])) { ?>
                     <?php
                     $file_extension = pathinfo($tarea['archivo'], PATHINFO_EXTENSION);
-                    if (in_array($file_extension, array("jpg", "jpeg", "png", "gif", "bmp"))) {
+                    if (in_array($file_extension, array("jpg", "jpeg", "png", "gif"))) {
                         echo '<img src="' . $tarea['archivo'] . '" alt="Imagen adjunta" class="img-small">';
                     } else {
                         echo '<p>Archivo: <a href="' . $tarea['archivo'] . '" target="_blank">Descargar archivo</a></p>';
