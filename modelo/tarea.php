@@ -57,7 +57,6 @@
                 $detalle_insertar = empty($detalle) ? null : $detalle;
                 $fecha_insertar = empty($fecha) ? null : $fecha;
         
-                // Determine whether the file name should be included in the SQL query
                 $file_insertar = ($nombre_archivo !== null) ? $nombre_archivo : null;
         
                 // Consulta SQL para insertar en la tabla 'tareas'
@@ -68,7 +67,6 @@
                 }
         
                 $stmt = $this->conexion->prepare($sql);
-                // Bind the parameters accordingly
                 if ($file_insertar !== null) {
                     $stmt->bind_param("ssss", $titulo, $detalle_insertar, $fecha_insertar, $file_insertar);
                 } else {
@@ -92,7 +90,6 @@
                             $detalle_sub = $subtarea['detalle'] ?? '';
                             $fecha_sub = empty($subtarea['fecha']) ? null : $subtarea['fecha'];
                             
-                            // Bind parameters and execute the statement for each subtask
                             $stmt->bind_param("sssi", $titulo_sub, $detalle_sub, $fecha_sub, $idTar);
                             $stmt->execute();
                         }
@@ -103,7 +100,6 @@
                 $this->conexion->commit();
                 return $idTar;
             } catch (mysqli_sql_exception $e) {
-                // Rollback transaction and handle error
                 $this->conexion->rollback();
                 $this->error = "Error ".$e->getCode().": Contacte con el administrador.";
                 return false;
