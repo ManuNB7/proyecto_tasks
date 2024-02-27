@@ -3,6 +3,7 @@
         <?php echo $_GET["msg"] ?>
     </h2>
 <?php } ?>
+<a href="index.php?controller=tarea&action=exportar_pdf" class="boton-forms" target="_blank">Descargar tareas y subtareas como PDF</a>
 <div class="contenedor">
     <?php if (empty($datos)) { ?>
         <h2>No hay tareas disponibles.</h2>

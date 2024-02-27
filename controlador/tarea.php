@@ -246,12 +246,93 @@
             return $this->listar_tarea();
         }
 
-
         /************SUGERENCIAS************/
         public function listar_sugerencias() {
             $this->titulo = "(-Sugerencias-)";
             $this->view = "sugerencias";
             
+        }
+
+        /************EXPORTAR PDF************/
+        public function exportar_pdf() {
+            // Incluye la librería de TCPDF necesaria
+            require_once __DIR__.'/../TCPDF-main/tcpdf.php';
+        
+            // Crea un nuevo documento PDF
+            $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        
+            // Información del documento
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetAuthor('Manuel Nieto Benítez');
+            $pdf->SetTitle('TASKS - PDF');
+            $pdf->SetSubject('Descarga de PDF');
+            $pdf->SetKeywords('Tareas, Subtareas, PDF');
+
+            // Establece el encabezado
+            $pdf->setHeaderData('', PDF_HEADER_LOGO_WIDTH, 'TASKS');
+            // Añade una página
+            $pdf->AddPage();
+            
+            // Añade el contenido al PDF
+            $html = '<style>
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                        }
+                        th, td {
+                            padding: 12px;
+                            border: 1px solid #ccc;
+                            text-align: left;
+                            font-size: 14px;
+                        }
+                        th {
+                            background-color: #f2f2f2;
+                            color: #333;
+                        }
+                        tr:nth-child(odd) {
+                            background-color: #f9f9f9;
+                        }
+                        img {
+                            max-width: 100px;
+                            height: auto;
+                        }
+                        .task-spacing {
+                            height: 20px; /* Adjust as needed */
+                        }
+                    </style>';
+            $html .= '<h1 style="text-align: center;">Listado de tareas y subtareas</h1>';
+            $html .= '<table>';
+            $html .= '<tr><th>TÍTULO</th><th>DETALLE</th><th>FECHA</th><th>IMAGEN</th></tr>';
+
+            // Mostrar la información
+            foreach ($this->modelo->listar_tareas() as $tarea) {
+                $html .= '<tr>';
+                $html .= '<td style="font-weight: bold;">' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</td>';
+                $html .= '<td>' . htmlspecialchars($tarea['detalle'], ENT_QUOTES) . '</td>';
+                $html .= '<td>' . htmlspecialchars($tarea['fecha'], ENT_QUOTES) . '</td>';
+                $html .= '<td><img src="' . $tarea['archivo'] . '" alt="Task Image"></td>';
+                $html .= '</tr>';
+                
+                if (isset($tarea['subtareas']) && !empty($tarea['subtareas'])) {
+                    foreach ($tarea['subtareas'] as $subtarea) {
+                        $html .= '<tr>';
+                        $html .= '<td style="font-style: italic;">' . htmlspecialchars($subtarea['titulo'], ENT_QUOTES) . '</td>';
+                        $html .= '<td>' . htmlspecialchars($subtarea['detalle'], ENT_QUOTES) . '</td>';
+                        $html .= '<td>' . htmlspecialchars($subtarea['fecha'], ENT_QUOTES) . '</td>';
+                        $html .= '<td></td>'; // Sin imagen para subtareas
+                        $html .= '</tr>';
+                    }
+                }
+                // Añade espacio entre tareas
+                $html .= '<br>';
+            }
+            $html .= '</table>';
+
+            // Escribe el contenido HTML en el PDF
+            $pdf->writeHTML($html, true, false, true, false, '');
+        
+            // Cierre y salida del PDF
+            $pdf->Output('tareas.pdf', 'I');
         }
 
         /************VALIDACIONES************/
