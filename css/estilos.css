@@ -37,30 +37,25 @@ body {
     border: 2px solid transparent;
     border-radius: 5px;
     margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); /* Agregar sombra */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo translúcido */
 }
 
+
 .menu-contenido:hover {
-    background-color: #1B1A55;
-    border-color: #1B1A55;
+    background-color: #535C91;
+    border-color: #535C91;
 }
 
 #titulin {
-    font-size: 24px;
+    font-size: xx-large;
     font-weight: bold;
-    margin-bottom: 20px;
-    color: #fff;
+    margin-bottom: 50px;
+    color: whitesmoke;
 }
-
-
 
 
 /*****************ESTILOS GENERALES*****************/
-
-#titulin{
-    font-size: xx-large;
-    padding-bottom: 100px;
-    color: whitesmoke;
-}
 
 h2 {
     text-align: center;
@@ -151,39 +146,41 @@ form {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    width: 600px; /* Ancho del formulario */
+    width: 600px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
     margin-bottom: 8px;
-    color: #333; /* Color del texto */
+    color: #333;
 }
 
 input {
-    width: calc(100% - 16px); /* Ancho del input, considerando el padding */
+    width: calc(100% - 16px);
     padding: 8px;
     margin-bottom: 16px;
     box-sizing: border-box;
-    border: 1px solid #ccc; /* Borde del input */
-    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 input[type="submit"] {
     background-color: #535C91;
     color: #fff;
     cursor: pointer;
-    border: none; /* Sin borde */
-    border-radius: 5px; /* Bordes redondeados */
+    border: none;
+    border-radius: 5px;
 }
 
 input[type="submit"]:hover {
     background-color: #9290C3;
 }
 
-  .box1 {
+.box1 {
     box-shadow: 0px 5px 10px 0px #9290C3;        
-  }
+}
+
 
   #eliminar{
     background-color: #fff;

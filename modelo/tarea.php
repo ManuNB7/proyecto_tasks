@@ -46,44 +46,8 @@
             return $subtareas;
         }      
 
-        function listar_mod($idTarea) {
-            $sql = "SELECT * FROM tareas WHERE idTar = ?";
-            $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("i", $idTarea);
-            $stmt->execute();
-            $resultado = $stmt->get_result();
-            $tarea = $resultado->fetch_assoc();
-            
-            if ($tarea) {
-                $tarea['subtareas'] = $this->obtener_subtareas($idTarea);
-            }
-            
-            return $tarea;
-        }
+        /********PROCESO INSERCIÓN DE TAREAS Y SUBTAREAS********/
 
-        public function marcar_subtarea_completada($idSubtarea) {
-            $sql = "UPDATE subtareas SET completada = 1 WHERE idSub = ?";
-            $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("i", $idSubtarea);
-            $stmt->execute();
-            
-            if ($stmt->affected_rows > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        
-        function listar_completadas(){
-            $sql = "SELECT subtareas.*, tareas.titulo as tarea FROM subtareas INNER JOIN tareas ON subtareas.idTar = tareas.idTar WHERE subtareas.completada = 1";
-            $stmt = $this->conexion->prepare($sql);
-            $stmt->execute();
-            $resultado = $stmt->get_result();
-            $subtareas_completadas = $resultado->fetch_all(MYSQLI_ASSOC);
-            
-            return $subtareas_completadas;
-        }    
-        
         public function insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo) {
             try {
                 $this->conexion->autocommit(false);
@@ -145,11 +109,46 @@
                 return false;
             }
         }
-        
-        
-        
-        
 
+        /********PROCESO MODIFICACIÓN********/
+        function listar_mod($idTarea) {
+            $sql = "SELECT * FROM tareas WHERE idTar = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("i", $idTarea);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+            $tarea = $resultado->fetch_assoc();
+            
+            if ($tarea) {
+                $tarea['subtareas'] = $this->obtener_subtareas($idTarea);
+            }
+            
+            return $tarea;
+        }
+        
+        public function marcar_subtarea_completada($idSubtarea) {
+            $sql = "UPDATE subtareas SET completada = 1 WHERE idSub = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("i", $idSubtarea);
+            $stmt->execute();
+            
+            if ($stmt->affected_rows > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
+        function listar_completadas(){
+            $sql = "SELECT subtareas.*, tareas.titulo as tarea FROM subtareas INNER JOIN tareas ON subtareas.idTar = tareas.idTar WHERE subtareas.completada = 1";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+            $subtareas_completadas = $resultado->fetch_all(MYSQLI_ASSOC);
+            
+            return $subtareas_completadas;
+        }    
+        
         public function modificar_tarea($idTarea, $titulo, $detalle, $fecha, $subtareas, $nombre_archivo) {
             if ($titulo === null || $detalle === null || $fecha === null && empty($subtareas)) {
                 return true;
@@ -216,12 +215,7 @@
             }
         }
         
-        /**
-         * Comprueba si existe la tarea
-         *
-         * @param int
-         * @return bool
-         */
+        /********PROCESO BORRADO DE TAREA********/
         function comprobarExisteTarea($id) {
             $sql = "SELECT idTar FROM tareas WHERE idTar = ?";
             $stmt = $this->conexion->prepare($sql);
@@ -233,12 +227,6 @@
             return $existe;
         }
 
-        /**
-         * 
-         *
-         * @param int 
-         * @return bool
-         */
         function borrar_fila($id) {
             try {
                 $this->conexion->begin_transaction();
@@ -259,9 +247,6 @@
                 return false;
             }
         }
-        
-        
-        
     }
 
 ?>
