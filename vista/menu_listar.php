@@ -10,31 +10,33 @@
     <?php } else { ?>
         <table class="tabla-tareas">
             <thead>
-                <tr>
-                    <th>Tarea</th>
-                    <th>Detalle</th>
-                    <th>Fecha</th>
-                    <th>Acciones</th>
+                <tr id="titulos">
+                    <th>TAREA</th>
+                    <th>OPCIONES</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($datos as $tarea) { ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($tarea['titulo'], ENT_QUOTES); ?></td>
-                        <td><?php echo htmlspecialchars($tarea['detalle'], ENT_QUOTES); ?></td>
-                        <td><?php echo htmlspecialchars($tarea['fecha'], ENT_QUOTES); ?></td>
-                        <td>
+                        <td class="celdas">
+                            <strong>Título:</strong> <?php echo htmlspecialchars($tarea['titulo'], ENT_QUOTES); ?><br>
+                            <strong>Detalle:</strong> <?php echo htmlspecialchars($tarea['detalle'], ENT_QUOTES); ?><br>
+                            <strong>Fecha:</strong> <?php echo htmlspecialchars($tarea['fecha'], ENT_QUOTES); ?><br>
                             <?php if (!empty($tarea['archivo'])) { ?>
                                 <?php
                                 $file_extension = pathinfo($tarea['archivo'], PATHINFO_EXTENSION);
                                 if (in_array($file_extension, array("jpg", "jpeg", "png", "gif"))) {
-                                    echo '<img src="img/archivos/' . $tarea['archivo'] . '" alt="Imagen adjunta" class="img-small">';
+                                    echo '<strong>Archivo adjunto: <br></strong> <img src="img/archivos/' . $tarea['archivo'] . '" alt="Imagen adjunta" class="img-small"><br>';
                                 } else {
-                                    echo '<a href="' . $tarea['archivo'] . '" target="_blank">Descargar archivo</a>';
+                                    echo '<strong>Archivo adjunto:</strong> <a href="' . $tarea['archivo'] . '" target="_blank">Descargar archivo</a><br>';
                                 }
                                 ?>
                             <?php } ?>
-                            <a href="index.php?controller=tarea&action=ver_tarea&id=<?php echo $tarea['idTar']; ?>" class="boton-forms" id="boton-ver">Ver más</a>
+                        </td>
+                        <td class="archivos">
+                            <a href="index.php?controller=tarea&action=ver_tarea&id=<?php echo $tarea['idTar']; ?>" class="boton-forms" id="boton-ver">Ver subtareas</a>
+                            <a href="index.php?controller=tarea&action=modificar_tarea&id=<?php echo $tarea['idTar']; ?>" class="boton-forms" id="boton-mod">Modificar</a>
+                            <a href="index.php?controller=tarea&action=borrado&id=<?php echo $tarea['idTar']; ?>" class="boton-forms" id="boton-del">Eliminar</a>
                         </td>
                     </tr>
                 <?php } ?>

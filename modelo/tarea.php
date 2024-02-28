@@ -19,9 +19,10 @@
             parent::__construct();
         }
 
-        function listar_tareas(){
-            $sql = "SELECT * FROM tareas";
+        function listar_tareas($idUsuario){
+            $sql = "SELECT * FROM tareas WHERE idUsuario = ?";
             $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("i", $idUsuario);
             $stmt->execute();
             $resultado = $stmt->get_result();
             $tareas = $resultado->fetch_all(MYSQLI_ASSOC);
@@ -34,11 +35,12 @@
             
             return $tareas;
         }
+        
 
-        public function obtener_tarea_por_id($idTarea) {
-            $sql = "SELECT * FROM tareas WHERE idTar = ?";
+        public function obtener_tarea_por_id($idTarea, $idUsuario) {
+            $sql = "SELECT * FROM tareas WHERE idTar = ? AND idUsuario = ?";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("i", $idTarea);
+            $stmt->bind_param("ii", $idTarea, $idUsuario);
             $stmt->execute();
             $resultado = $stmt->get_result();
             $tarea = $resultado->fetch_assoc();
@@ -50,6 +52,7 @@
             
             return $tarea;
         }
+        
         
         
         function obtener_subtareas($idTarea){
@@ -65,7 +68,7 @@
 
         /********PROCESO INSERCIÓN DE TAREAS Y SUBTAREAS********/
 
-        public function insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo) {
+        public function insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo, $idUsuario) { // Agregar $idUsuario al método
             try {
                 $this->conexion->autocommit(false);
                 $this->conexion->begin_transaction();
@@ -78,16 +81,16 @@
         
                 // Consulta SQL para insertar en la tabla 'tareas'
                 if ($file_insertar !== null) {
-                    $sql = "INSERT INTO tareas(titulo, detalle, fecha, archivo) VALUES (?,?,?,?)";
+                    $sql = "INSERT INTO tareas(titulo, detalle, fecha, archivo, idUsuario) VALUES (?,?,?,?,?)"; // Agregar idUsuario al INSERT
                 } else {
-                    $sql = "INSERT INTO tareas(titulo, detalle, fecha) VALUES (?,?,?)";
+                    $sql = "INSERT INTO tareas(titulo, detalle, fecha, idUsuario) VALUES (?,?,?,?)"; // Agregar idUsuario al INSERT
                 }
         
                 $stmt = $this->conexion->prepare($sql);
                 if ($file_insertar !== null) {
-                    $stmt->bind_param("ssss", $titulo, $detalle_insertar, $fecha_insertar, $file_insertar);
+                    $stmt->bind_param("ssssi", $titulo, $detalle_insertar, $fecha_insertar, $file_insertar, $idUsuario);
                 } else {
-                    $stmt->bind_param("sss", $titulo, $detalle_insertar, $fecha_insertar);
+                    $stmt->bind_param("sssi", $titulo, $detalle_insertar, $fecha_insertar, $idUsuario);
                 }
                 $stmt->execute();
         
@@ -166,15 +169,20 @@
             }
         }
         
-        function listar_completadas(){
-            $sql = "SELECT subtareas.*, tareas.titulo as tarea FROM subtareas INNER JOIN tareas ON subtareas.idTar = tareas.idTar WHERE subtareas.completada = 1";
+        function listar_completadas($idUsuario){
+            $sql = "SELECT subtareas.*, tareas.titulo as tarea 
+                    FROM subtareas 
+                    INNER JOIN tareas ON subtareas.idTar = tareas.idTar 
+                    WHERE subtareas.completada = 1 
+                    AND tareas.idUsuario = ?";
             $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("i", $idUsuario);
             $stmt->execute();
             $resultado = $stmt->get_result();
             $subtareas_completadas = $resultado->fetch_all(MYSQLI_ASSOC);
             
             return $subtareas_completadas;
-        }    
+        }
         
         public function modificar_tarea($idTarea, $titulo, $detalle, $fecha, $subtareas, $nombre_archivo) {
             if ($titulo === null || $detalle === null || $fecha === null && empty($subtareas)) {

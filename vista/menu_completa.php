@@ -1,3 +1,8 @@
+<?php if(isset($_GET["msg"])){ ?>
+    <h2 id="<?php echo $_GET["tipomsg"] ?>">
+        <?php echo $_GET["msg"] ?>
+    </h2>
+<?php } ?>
 <div class="contenedorT">
        <?php if (empty($datos)) { ?>
         <h2>No hay subtareas completadas.</h2>

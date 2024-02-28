@@ -122,7 +122,10 @@ hr {
     margin-left: 875px;
 }
 
-
+#titulos{
+    text-align: center;
+    font-style: italic;
+}
 /*****************CONTENEDORES*****************/
 
 /*CONTENEDORES LISTADO*/
@@ -130,7 +133,10 @@ hr {
     padding: 20px;
 }
 
-/*ESTILOS PARA TABLA DE TAREAS*/
+.celdas{
+    font-size: large;
+}
+/* ESTILOS PARA TABLA DE TAREAS */
 .tabla-tareas {
     width: 100%;
     border-collapse: collapse;
@@ -153,6 +159,80 @@ hr {
 .tabla-tareas tbody tr:nth-child(odd) {
     background-color: #DADADA;
 }
+
+.tabla-tareas tbody tr:hover {
+    background-color: #C0C0C0; /* Cambio de color al pasar el mouse */
+}
+
+/* Ajuste de tamaño para la columna de archivos */
+.tabla-tareas td.archivos {
+    max-width: 160px; /* Tamaño máximo */
+    white-space: nowrap; /* No permitir saltos de línea */
+}
+
+/*SUB*/
+.contenedor {
+    margin: 20px;
+}
+
+.titulo-tarea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.titulo-tarea h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.botones {
+    display: flex;
+}
+
+
+.tabla-subtareas {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla-subtareas th,
+.tabla-subtareas td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.tabla-subtareas th {
+    background-color: #f2f2f2;
+}
+
+.tabla-subtareas tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla-subtareas tr:hover {
+    background-color: #f2f2f2;
+}
+
+.boton-forms {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.boton-forms:hover {
+    background-color: #0056b3;
+}
+
 
 /*****************TABLAS*****************/
 .contenedorT {
