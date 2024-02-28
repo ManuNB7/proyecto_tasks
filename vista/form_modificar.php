@@ -16,9 +16,9 @@
         <?php
         $file_extension = pathinfo($datos['archivo'], PATHINFO_EXTENSION);
         if (in_array($file_extension, array("jpg", "jpeg", "png", "gif"))) {
-            echo '<img src="' . $datos['archivo'] . '" alt="Imagen adjunta" class="img-small">';
+            echo '<img src="img/archivos/' . $datos['archivo'] . '" alt="Imagen adjunta" class="img-small">';
         } else {
-            echo '<p>Archivo: <a href="' . $datos['archivo'] . '" target="_blank">Descargar archivo</a></p>';
+            echo '<p>Archivo: <a href="img/archivos/' . $datos['archivo'] . '" target="_blank">Descargar archivo</a></p>';
         }
         ?>
     <?php } ?>
@@ -35,6 +35,6 @@
         <input type="date" name="subtarea[<?php echo $index; ?>][fecha]" value="<?php echo htmlspecialchars($subtarea['fecha'], ENT_QUOTES); ?>">
     <?php endforeach; ?>
     <input type="submit" value="Guardar">
-    <a href="index.php?controller=tarea&action=vista_subtarea&id=<?php echo $datos['idTar']; ?>">Añadir subtarea</a>
-    <a href="index.php?controller=tarea&action=listar_tarea">Volver atrás</a>
+    <a href="index.php?controller=tarea&action=vista_subtarea&id=<?php echo $datos['idTar']; ?>" class="boton-forms">Añadir subtarea</a>
+    <a href="index.php?controller=tarea&action=listar_tarea" class="boton-forms">Volver atrás</a>
 </form>

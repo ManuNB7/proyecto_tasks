@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?php echo $controlador->titulo ?></title>
-        <script src="https://kit.fontawesome.com/1596d518db.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="css/estilos.css">
     </head>
     <body>

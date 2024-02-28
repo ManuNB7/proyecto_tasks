@@ -34,6 +34,23 @@
             
             return $tareas;
         }
+
+        public function obtener_tarea_por_id($idTarea) {
+            $sql = "SELECT * FROM tareas WHERE idTar = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("i", $idTarea);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+            $tarea = $resultado->fetch_assoc();
+            
+            // Obtener subtareas de la tarea
+            if ($tarea) {
+                $tarea['subtareas'] = $this->obtener_subtareas($idTarea);
+            }
+            
+            return $tarea;
+        }
+        
         
         function obtener_subtareas($idTarea){
             $sql = "SELECT * FROM subtareas WHERE idTar = ? AND completada is NULL";
@@ -122,6 +139,20 @@
             return $tarea;
         }
         
+        public function obtener_nombre_imagen($idTarea) {
+            // Realiza la consulta para obtener el nombre de la imagen asociada a la tarea
+            $sql = "SELECT archivo FROM tareas WHERE id = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("i", $idTarea);
+            $stmt->execute();
+            $stmt->bind_result($nombre_imagen);
+            $stmt->fetch();
+            $stmt->close();
+        
+            // Retorna el nombre de la imagen o NULL si no se encuentra
+            return $nombre_imagen;
+        }
+
         public function marcar_subtarea_completada($idSubtarea) {
             $sql = "UPDATE subtareas SET completada = 1 WHERE idSub = ?";
             $stmt = $this->conexion->prepare($sql);
@@ -198,7 +229,7 @@
                 
                 $sql = "INSERT INTO subtareas(titulo, detalle, fecha, idTar) VALUES (?, ?, ?, ?)";
                 $stmt = $this->conexion->prepare($sql);
-                $stmt->bind_param("sssi", $titulo, $detalle, $fecha_insertar, $idTarea);
+                $stmt->bind_param("sssi", $titulo, $detalle_insertar, $fecha_insertar, $idTarea);
                 $stmt->execute();
 
                 $this->conexion->commit();

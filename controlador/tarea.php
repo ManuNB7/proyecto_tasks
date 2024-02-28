@@ -29,6 +29,14 @@
             return $this->modelo->listar_tareas();
         }
 
+        public function ver_tarea() {
+            $this->titulo = "Listar tareas";
+            $this->view = "ver_tarea";
+            $idTarea = isset($_GET['id']) ? $_GET['id'] : null;
+            return $this->modelo->obtener_tarea_por_id($idTarea);
+        }
+        
+
         /************GUARDAR TAREAS Y SUBTAREAS************/
         public function guardar_tarea() {
             $this->view = "form_subtarea";
@@ -62,24 +70,26 @@
                 $_GET["msg"] = "Error: Datos de tarea o subtareas no válidos.";
                 return;
             }
+            // Inicializar la variable $nombre_archivo
+            $nombre_archivo = null;
+            
             // Manejo de la subida de archivos
-            if (isset($_FILES['archivo_principal']) && $_FILES['archivo_principal']['error'] === UPLOAD_ERR_OK) {
+            if (!empty($_FILES['archivo_principal']['name'])) {
                 $uploadedFile = $_FILES['archivo_principal'];
                 $carpeta_destino = 'img/archivos/';
-                $nombre_archivo = $carpeta_destino . basename($uploadedFile['name']);
-                
-                // Mueve la imagen al directorio
-                if (move_uploaded_file($uploadedFile['tmp_name'], $nombre_archivo)) {
-                } else {
+                //Obtiene el id y genera un nombre único
+                $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION);
+                $nombre_archivo = uniqid() . "." . $ext;
+
+                // Mueve la nueva imagen al directorio
+                if (!move_uploaded_file($uploadedFile['tmp_name'], $carpeta_destino . $nombre_archivo)) {
                     // Controlar en caso de error
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error: No se pudo subir el archivo.";
                     return;
                 }
-            } else {
-                $nombre_archivo = null;
             }
-
+            
             $idTar = $this->modelo->insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo);
             
             if ($idTar) {
@@ -119,23 +129,25 @@
                 $_GET["msg"] = "Error: Datos de tarea o subtareas no válidos.";
                 return;
             }
+            
+            // Inicializar la variable $nombre_archivo
+            $nombre_archivo = null;
+            
             // Manejo de la subida de archivos
-            if (isset($_FILES['archivo_principal']) && $_FILES['archivo_principal']['error'] === UPLOAD_ERR_OK) {
+            if (!empty($_FILES['archivo_principal']['name'])) {
                 $uploadedFile = $_FILES['archivo_principal'];
                 $carpeta_destino = 'img/archivos/';
-                $nombre_archivo = $carpeta_destino . basename($uploadedFile['name']);
-                
-                // Mueve la imagen al directorio
-                if (move_uploaded_file($uploadedFile['tmp_name'], $nombre_archivo)) {
-                    // File uploaded successfully
-                } else {
-                    // Controla errores
+                //Obtiene el id y genera un nombre único
+                $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION);
+                $nombre_archivo = uniqid() . "." . $ext;
+
+                // Mueve la nueva imagen al directorio
+                if (!move_uploaded_file($uploadedFile['tmp_name'], $carpeta_destino . $nombre_archivo)) {
+                    // Controlar en caso de error
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error: No se pudo subir el archivo.";
                     return;
                 }
-            } else {
-                $nombre_archivo = null;
             }
         
             // Comprueba que haya subtareas
@@ -168,11 +180,29 @@
         }
         
         
-        public function vista_subtarea(){
+        public function vista_subtarea() {
             $this->titulo = "Agregar subtarea";
             $this->view = "form_subtarea2";
-            // Devuelve el id de la tarea
-            return isset($_GET['id']) ? $_GET['id'] : null;
+            // Obtener el ID de la tarea desde la URL
+            $idTarea = isset($_GET['id']) ? $_GET['id'] : null;
+            // Obtener todas las tareas
+            $tareas = $this->modelo->listar_tareas();
+            // Buscar la tarea correspondiente al ID en la lista de tareas
+            $tituloTarea = "";
+            foreach ($tareas as $tarea) {
+                if ($tarea['idTar'] == $idTarea) {
+                    $tituloTarea = $tarea['titulo'];
+                    break;
+                }
+            }
+            
+            // Crear un array con los datos necesarios para la vista
+            $datos = array(
+                'idTarea' => $idTarea,
+                'titulo' => $tituloTarea
+            );
+            // Retornar los datos a la vista
+            return $datos;
         }
 
         public function agregar_subtarea() {
@@ -254,86 +284,86 @@
         }
 
         /************EXPORTAR PDF************/
-        public function exportar_pdf() {
-            // Incluye la librería de TCPDF necesaria
-            require_once __DIR__.'/../TCPDF-main/tcpdf.php';
-        
-            // Crea un nuevo documento PDF
-            $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        
-            // Información del documento
-            $pdf->SetCreator(PDF_CREATOR);
-            $pdf->SetAuthor('Manuel Nieto Benítez');
-            $pdf->SetTitle('TASKS - PDF');
-            $pdf->SetSubject('Descarga de PDF');
-            $pdf->SetKeywords('Tareas, Subtareas, PDF');
+public function exportar_pdf() {
+    // Incluye la librería de TCPDF necesaria
+    require_once __DIR__.'/../TCPDF-main/tcpdf.php';
 
-            // Establece el encabezado
-            $pdf->setHeaderData('', PDF_HEADER_LOGO_WIDTH, 'TASKS');
-            // Añade una página
-            $pdf->AddPage();
-            
-            // Añade el contenido al PDF
-            $html = '<style>
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        th, td {
-                            padding: 12px;
-                            border: 1px solid #ccc;
-                            text-align: left;
-                            font-size: 14px;
-                        }
-                        th {
-                            background-color: #f2f2f2;
-                            color: #333;
-                        }
-                        tr:nth-child(odd) {
-                            background-color: #f9f9f9;
-                        }
-                        img {
-                            max-width: 100px;
-                            height: auto;
-                        }
-                        .task-spacing {
-                            height: 20px; /* Adjust as needed */
-                        }
-                    </style>';
-            $html .= '<h1 style="text-align: center;">Listado de tareas y subtareas</h1>';
-            $html .= '<table>';
-            $html .= '<tr><th>TÍTULO</th><th>DETALLE</th><th>FECHA</th><th>IMAGEN</th></tr>';
+    // Crea un nuevo documento PDF
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-            // Mostrar la información
-            foreach ($this->modelo->listar_tareas() as $tarea) {
-                $html .= '<tr>';
-                $html .= '<td style="font-weight: bold;">' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</td>';
-                $html .= '<td>' . htmlspecialchars($tarea['detalle'], ENT_QUOTES) . '</td>';
-                $html .= '<td>' . htmlspecialchars($tarea['fecha'], ENT_QUOTES) . '</td>';
-                $html .= '<td><img src="' . $tarea['archivo'] . '" alt="Task Image"></td>';
-                $html .= '</tr>';
-                
-                if (isset($tarea['subtareas']) && !empty($tarea['subtareas'])) {
-                    foreach ($tarea['subtareas'] as $subtarea) {
-                        $html .= '<tr>';
-                        $html .= '<td style="font-style: italic;">' . htmlspecialchars($subtarea['titulo'], ENT_QUOTES) . '</td>';
-                        $html .= '<td>' . htmlspecialchars($subtarea['detalle'], ENT_QUOTES) . '</td>';
-                        $html .= '<td>' . htmlspecialchars($subtarea['fecha'], ENT_QUOTES) . '</td>';
-                        $html .= '<td></td>'; // Sin imagen para subtareas
-                        $html .= '</tr>';
-                    }
-                }
-                // Añade espacio entre tareas
-                $html .= '<br>';
-            }
-            $html .= '</table>';
+    // Información del documento
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('Manuel Nieto Benítez');
+    $pdf->SetTitle('TASKS - PDF');
+    $pdf->SetSubject('Descarga de PDF');
+    $pdf->SetKeywords('Tareas, Subtareas, PDF');
 
-            // Escribe el contenido HTML en el PDF
-            $pdf->writeHTML($html, true, false, true, false, '');
-        
-            // Cierre y salida del PDF
-            $pdf->Output('tareas.pdf', 'I');
-        }
+    // Establece el encabezado
+    $pdf->setHeaderData('', PDF_HEADER_LOGO_WIDTH, 'TASKS');
+    // Añade una página
+    $pdf->AddPage();
+
+    // Añade el contenido al PDF
+    $html = '<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+        font-size: 14px;
+    }
+    th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+    tr:nth-child(odd) {
+        background-color: #f9f9f9;
+    }
+    img {
+        max-width: 100px;
+        height: auto;
+    }
+    .task-spacing {
+        height: 20px; /* Adjust as needed */
+    }
+    </style>';
+    $html .= '<h1 style="text-align: center;">Listado de tareas y subtareas</h1>';
+    $html .= '<table>';
+    $html .= '<tr><th>TÍTULO</th><th>DETALLE</th><th>FECHA</th></tr>';
+
+    // Loop through tasks and subtasks
+    foreach ($this->modelo->listar_tareas() as $tarea) {
+    $html .= '<tr>';
+    $html .= '<td style="font-weight: bold;">' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</td>';
+    $html .= '<td>' . htmlspecialchars($tarea['detalle'], ENT_QUOTES) . '</td>';
+    $html .= '<td>' . htmlspecialchars($tarea['fecha'], ENT_QUOTES) . '</td>';
+    $html .= '</tr>';
+
+    if (isset($tarea['subtareas']) && !empty($tarea['subtareas'])) {
+    foreach ($tarea['subtareas'] as $subtarea) {
+    $html .= '<tr>';
+    $html .= '<td style="font-style: italic;">' . htmlspecialchars($subtarea['titulo'], ENT_QUOTES) . '</td>';
+    $html .= '<td>' . htmlspecialchars($subtarea['detalle'], ENT_QUOTES) . '</td>';
+    $html .= '<td>' . htmlspecialchars($subtarea['fecha'], ENT_QUOTES) . '</td>';
+    $html .= '</tr>';
+    }
+    }
+    // Add spacing between tasks
+    $html .= '<tr class="task-spacing"><td colspan="4"></td></tr>';
+    }
+    $html .= '</table>';
+
+
+        // Escribe el contenido HTML en el PDF
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Salida del PDF como contenido en línea
+        $pdf->Output('tareas.pdf', 'I');
+    }
+
 
         /************VALIDACIONES************/
         private function validarTarea($titulo, $detalle, $subtareas) {

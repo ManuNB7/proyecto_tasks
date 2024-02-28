@@ -11,8 +11,8 @@ CREATE TABLE tareas(
     detalle VARCHAR(80) NULL,
     fecha DATE NULL,
     archivo BLOB NULL,
-    id TINYINT unsigned,
-    CONSTRAINT FK_usuario_tareas FOREIGN KEY (id) REFERENCES usuarios(id)
+    idUsuario TINYINT unsigned,
+    CONSTRAINT FK_usuario_tareas FOREIGN KEY (idUsuario) REFERENCES usuarios(id)
 );
 
 CREATE TABLE subtareas(

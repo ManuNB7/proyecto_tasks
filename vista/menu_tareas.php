@@ -10,6 +10,7 @@
             <h2>Bienvenido a Tasks</h2>
             <p>La mejor manera de organizar tus tareas y subtareas de forma fácil y rápida.</p>
             <a href='index.php?controller=tarea' class="cta-btn">Crear nueva tarea</a>
+            <a href='index.php?controller=tarea&action=listar_tarea' class="cta-btn">Ver mis tareas</a>
         </div>
         <div class="features">
             <div class="feature">
