@@ -66,18 +66,6 @@
             }
         }
         
-
-        /**
-         * Valida si los campos del formulario no están vacíos.
-         */
-        function validar($nombre, $pw){
-            if(empty($nombre)||empty($pw)){
-                $_GET["error"] = "Debes rellenar el nombre y la contraseña";
-                return false;
-            }
-            return true;
-        }
-        
         /**
          * Cierra la sesión del usuario.
          */
@@ -92,6 +80,16 @@
 
             // Destroy the session
             session_destroy();
+        }
+        /**
+         * Valida si los campos del formulario no están vacíos.
+         */
+        function validar($nombre, $pw){
+            if(empty($nombre)||empty($pw)){
+                $_GET["error"] = "Debes rellenar el nombre y la contraseña";
+                return false;
+            }
+            return true;
         }
     }
 

@@ -8,19 +8,15 @@
     <div class="container">
         <div class="hero">
         <?php
-
-            // Check if the session variable 'user_id' is set
             if (isset($_SESSION['user_id'])) {
-                // If the session variable is set, display a personalized greeting
                 echo "<h2>Bienvenid@, " . $_SESSION['nombre'] . ".</h2>";
-                echo "<p>Your user ID: " . $_SESSION['user_id'] . "</p>";
+                echo "<p>User ID: " . $_SESSION['user_id'] . "</p>";
             ?>
                 <p>La mejor manera de organizar tus tareas y subtareas de forma fácil y rápida.</p>
                 <a href='index.php?controller=tarea&action=form_tarea' class="cta-btn">Crear nueva tarea</a>
                 <a href='index.php?controller=tarea&action=listar_tarea' class="cta-btn">Ver mis tareas</a>
             <?php
             } else {
-                // If the session variable is not set, display a generic message and a login button
             ?>
                 <h2>Bienvenido a Tasks</h2>
                 <p>La mejor manera de organizar tus tareas y subtareas de forma fácil y rápida.</p>

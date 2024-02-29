@@ -40,9 +40,9 @@
                 $resultado = $this->modelo->registrar_usuario($nombre,$correo,$pw);
                 
                 if($resultado){
-                    $this->view = "registro_usuario";
-                    $this->titulo = "Registrarse";
-                    $_GET["exito"] = "Usuario añadido con éxito";
+                    $this->view = "inicio_sesion";
+                    $this->titulo = "Iniciar sesión";
+                    $_GET["exito"] = "Usuario registrado con éxito";
                 } else {
                     $_GET["error"] = $this->modelo->error;
                     $this->view = "registro_usuario";

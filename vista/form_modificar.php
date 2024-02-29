@@ -17,13 +17,13 @@
         $file_extension = pathinfo($datos['archivo'], PATHINFO_EXTENSION);
         if (in_array($file_extension, array("jpg", "jpeg", "png", "gif"))) {
             echo '<img src="img/archivos/' . $datos['archivo'] . '" alt="Imagen adjunta" class="img-small">';
-            echo 'Selecciona una nueva imagen para cambiarla.';
         } else {
             echo '<p>Archivo: <a href="img/archivos/' . $datos['archivo'] . '" target="_blank">Descargar archivo</a></p>';
         }
         ?>
     <?php } ?>
     <label for="archivo_principal">Archivo:</label>
+    Seleccione una nueva imagen para cambiarla (Si no selecciona ninguna, se eliminará la anterior).
     <input type="file" name="archivo_principal">
     <?php foreach ($datos['subtareas'] as $index => $subtarea): ?>
         <h3>Subtarea <?php echo $index + 1; ?></h3>

@@ -27,89 +27,47 @@
         }
 
         public function menu_tareas() {
-            // Check if there's an active session and get the user ID
             $this->authController->checkSession();
-            
-            if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
-        
-                $this->titulo = "Menú TASKS";
-                $this->view = "menu_tareas";
-        
-                // Pass the user ID to the model method
-                return $this->modelo->listar_tareas($idUsuario);
-            } else {
-                // If there's no active session, return a flag indicating that the user should be redirected
-                return "redirect_login";
-            }
+            $this->titulo = "Menú TASKS";
+            $this->view = "menu_tareas";
         }
-        public function form_tarea() {
-            // Check if there's an active session and get the user ID
-            $this->authController->checkSession();
-            
-            if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
-        
-                $this->titulo = "Añadir tarea";
-                $this->view = "form_tarea";
-        
-                // Pass the user ID to the model method
-                return $this->modelo->listar_tareas($idUsuario);
-            } else {
-                // If there's no active session, return a flag indicating that the user should be redirected
-                return "redirect_login";
-            }
-        }
-        
 
+        public function form_tarea() {
+            $this->authController->checkSession();
+            $this->titulo = "Añadir tarea";
+            $this->view = "form_tarea";
+        }
+        
         /**
          * Método para listar las tareas.
          */
         public function listar_tarea() {
-            // Check if there's an active session and get the user ID
             $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
+                $idUsuario = $_SESSION['user_id'];
                 
-        
                 $this->titulo = "Listar tareas";
                 $this->view = "menu_listar";
-                
-                // Pass the user ID to the model method
+
                 return $this->modelo->listar_tareas($idUsuario);
             } else {
-                // If there's no active session, redirect to the login page
                 header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
                 exit();
             }
         }
         
-
         /**
          * Método para ver una tarea específica.
          */
         public function ver_tarea() {
-            // Check if there's an active session and get the user ID
-            session_start(); // Start the session if it's not already started
-            if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
+            $this->authController->checkSession();
         
-                $this->titulo = "Listar tareas";
-                $this->view = "ver_tarea";
-                $idTarea = isset($_GET['id']) ? $_GET['id'] : null;
-                
-                // Pass both the task ID and the user ID to the model method
-                return $this->modelo->obtener_tarea_por_id($idTarea, $idUsuario);
-            } else {
-                // If there's no active session, redirect to the login page
-                header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
-                exit();
-            }
-        }
-        
+            $this->titulo = "Listar tareas";
+            $this->view = "ver_tarea";
+            $idTarea = isset($_GET['id']) ? $_GET['id'] : null;
 
-        
-        
+            return $this->modelo->obtener_tarea_por_id($idTarea);
+        }
 
         /************GUARDAR TAREAS Y SUBTAREAS************/
         /**
@@ -118,12 +76,8 @@
         public function guardar_tarea() {
             $this->authController->checkSession();
             $this->view = "form_subtarea";
-            
             // Obtener los datos de la tarea principal
             $titulo = $_POST['titulo'];
-            //$idUsuario = $_POST['idUsuario']; // Nuevo campo para el usuario
-            // Simular el ID del usuario (en este caso, 4)
-           
             // Obtener número de subtareas
             $num_subtareas = $_POST['num_subtareas'];
             
@@ -136,17 +90,14 @@
             return $datos;
         }
         
-
         /**
          * Método para guardar subtareas de una tarea principal.
          */
         public function guardar_subtareas() {
             // Check if there's an active session and get the user ID
-            session_start(); // Start the session if it's not already started
+            $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
                 $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
-        
-                $this->view = "form_tarea";
                 
                 // Obtener los datos de la tarea del formulario
                 $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
@@ -182,7 +133,7 @@
                 }
         
                 // Insertar la tarea en la base de datos            
-                $idTar = $this->modelo->insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo, $idUsuario); // Pasar el idUsuario al método insertar_tarea  
+                $idTar = $this->modelo->insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo, $idUsuario);
                 // Verificar si la tarea se insertó correctamente
                 if ($idTar) {
                     $_GET["tipomsg"] = "exito";
@@ -200,13 +151,12 @@
             }
         }
         
-
-        
         /********PROCESO MODIFICACIÓN********/
         /**
         * Método para modificar una tarea existente.
         */
         public function modificar_tarea() {
+            $this->authController->checkSession();
             $this->titulo = "Modificar tarea";
             $this->view = "form_modificar";
             
@@ -264,7 +214,6 @@
                 if ($resultado) {
                     $_GET["tipomsg"] = "exito";
                     $_GET["msg"] = "Tarea modificada exitosamente.";
-        
                 } else {
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error al modificar la tarea. Por favor, inténtelo de nuevo.";
@@ -272,11 +221,10 @@
             } else {
                 // Si hay subtareas, actualiza ambas
                 $resultado = $this->modelo->modificar_tarea($idTarea, $titulo, $detalle, $fecha, $subtareas, $nombre_archivo);
-        
+
                 if ($resultado) {
                     $_GET["tipomsg"] = "exito";
                     $_GET["msg"] = "Tarea y subtareas modificadas exitosamente.";
-        
                 } else {
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error al modificar la tarea y las subtareas. Por favor, inténtelo de nuevo.";
@@ -290,7 +238,7 @@
          */
         public function vista_subtarea() {
             // Check if there's an active session and get the user ID
-            session_start(); // Start the session if it's not already started
+            $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
                 $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
         
@@ -328,10 +276,8 @@
             }
         }
         
-        
         /**
          * Método para agregar una subtarea.
-         * 
          */
         public function agregar_subtarea() {
             $this->view = "form_subtarea2";
@@ -342,14 +288,12 @@
             $fecha = isset($_POST['fecha']) ? $_POST['fecha'] : '';
             $idTarea = isset($_POST['idTarea']) ? $_POST['idTarea'] : null;
             
-            // Comprueba que sea un array
             if (!$this->validarTarea($titulo, $detalle, $fecha)) {
                 $_GET["tipomsg"] = "error";
                 $_GET["msg"] = "Error: Datos de subtarea no válidos.";
                 return;
             }
             
-            // Insertar la subtarea en la base de datos
             $resultado = $this->modelo->agregar_subtarea($idTarea, $titulo, $detalle, $fecha);
             
             if ($resultado) {
@@ -367,50 +311,33 @@
          * Método para marcar una subtarea como completada.
          */
         public function marcar_completada() {
-            // Check if there's an active session and get the user ID
-            session_start(); // Start the session if it's not already started
-            if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
-        
-                $this->authController->checkSession();
-                // Obtiene el ID de la subtarea desde la URL
-                $idSubtarea = isset($_GET['idSub']) ? $_GET['idSub'] : null;
-                
-                // Marca la subtarea como completada
-                $this->modelo->marcar_subtarea_completada($idSubtarea);
-        
-                // Establece un mensaje de éxito
-                $_GET["tipomsg"] = "exito";
-                $_GET["msg"] = "Subtarea marcada como completada.";
-        
-                return $this->listar_completadas();
-            } else {
-                // If there's no active session, redirect to the login page
-                header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
-                exit();
-            }
+            // Obtiene el ID de la subtarea desde la URL
+            $idSubtarea = isset($_GET['idSub']) ? $_GET['idSub'] : null;
+            // Marca la subtarea como completada
+            $this->modelo->marcar_subtarea_completada($idSubtarea);
+
+            $_GET["tipomsg"] = "exito";
+            $_GET["msg"] = "Subtarea marcada como completada.";
+            return $this->listar_completadas();
         }
         
         /**
          * Método para listar las subtareas completadas.
          */
         public function listar_completadas() {
-            // Check if there's an active session and get the user ID
-            session_start(); // Start the session if it's not already started
+            $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
+                $idUsuario = $_SESSION['user_id'];
         
                 $this->titulo = "Subtareas completadas";
                 $this->view = "menu_completa";
         
                 return $this->modelo->listar_completadas($idUsuario);
             } else {
-                // If there's no active session, redirect to the login page
                 header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
                 exit();
             }
         }
-        
         
         /************BORRAR TAREAS************/
         
@@ -418,7 +345,7 @@
          * Método para mostrar el formulario de confirmación de borrado de tarea.
          */
         public function borrado() {
-            // Obtiene el id de la tarea
+            $this->authController->checkSession();
             $id = $_GET['id'] ?? '';
             $this->view = "form_eliminar";
 
@@ -442,15 +369,14 @@
             return $this->listar_tarea();
         }
 
+        /*SUGERENCIAS*/
+
         public function listar_sugerencias() {
-            // Check if there's an active session and get the user ID
-            session_start(); // Start the session if it's not already started
+            $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
-                // If the user is authenticated, proceed to display the suggestions page
                 $this->titulo = "(-Sugerencias-)";
                 $this->view = "sugerencias";
             } else {
-                // If there's no active session, redirect to the login page
                 header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
                 exit();
             }
@@ -460,40 +386,25 @@
 
         /**
          * Método para exportar un listado de tareas y subtareas a un archivo PDF.
-         * 
-         * Incluye la librería TCPDF necesaria.
-         * Crea un nuevo documento PDF.
-         * Establece la información del documento y el encabezado.
-         * Agrega una página al PDF.
-         * Añade el contenido HTML al PDF, incluyendo un listado de tareas y subtareas.
-         * Escribe el contenido HTML en el PDF.
-         * Muestra el PDF en el navegador para su descarga.
          */
         public function exportar_pdf() {
-            // Check if there's an active session and get the user ID
-            session_start(); // Start the session if it's not already started
+            session_start();
             if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
+                $idUsuario = $_SESSION['user_id'];
         
-                // Incluye la librería de TCPDF necesaria
                 require_once __DIR__.'/../TCPDF-main/tcpdf.php';
         
-                // Crea un nuevo documento PDF
                 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         
-                // Información del documento
                 $pdf->SetCreator(PDF_CREATOR);
                 $pdf->SetAuthor('Manuel Nieto Benítez');
                 $pdf->SetTitle('TASKS - PDF');
                 $pdf->SetSubject('Descarga de PDF');
                 $pdf->SetKeywords('Tareas, Subtareas, PDF');
         
-                // Establece el encabezado
                 $pdf->setHeaderData('', PDF_HEADER_LOGO_WIDTH, 'TASKS');
-                // Añade una página
                 $pdf->AddPage();
         
-                // Añade el contenido al PDF
                 $html = '<style>
                 table {
                     width: 100%;
@@ -524,7 +435,6 @@
                 $html .= '<table>';
                 $html .= '<tr><th>TÍTULO</th><th>DETALLE</th><th>FECHA</th></tr>';
         
-                // Loop through tasks and subtasks
                 foreach ($this->modelo->listar_tareas($idUsuario) as $tarea) {
                     $html .= '<tr>';
                     $html .= '<td style="font-weight: bold;">' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</td>';
@@ -541,18 +451,13 @@
                             $html .= '</tr>';
                         }
                     }
-                    // Add spacing between tasks
                     $html .= '<tr class="task-spacing"><td colspan="4"></td></tr>';
                 }
                 $html .= '</table>';
-        
-                // Escribe el contenido HTML en el PDF
+
                 $pdf->writeHTML($html, true, false, true, false, '');
-        
-                // Salida del PDF como contenido en línea
                 $pdf->Output('tareas.pdf', 'I');
             } else {
-                // If there's no active session, redirect to the login page
                 header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
                 exit();
             }
@@ -580,7 +485,6 @@
                 return false;
             }
         
-            // Comprueba que el campo título solo contenga letras, números, espacios y una serie de carácteres concretos
             if (!preg_match('/^[a-zA-ZÑñÁáÉéÍíÓóÚúÜü][a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü ]{0,49}$/', $titulo)) {
                 $_GET["tipomsg"] = "error";
                 $_GET["msg"] = "El título no puede contener carácteres especiales.";
@@ -620,5 +524,4 @@
         }
 
     }
-
 ?>
