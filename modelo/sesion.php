@@ -52,6 +52,24 @@
                 return true;
             }
         }
+
+        public function obtener_id_usuario($nombre_usuario) {
+            // Perform a database query to retrieve the user ID based on the username
+            $sql = "SELECT ".$this->id." FROM ".$this->tabla." WHERE ".$this->nombre." = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param('s', $nombre_usuario);
+            $stmt->execute();
+            $stmt->bind_result($id);
+            $stmt->fetch();
+            $stmt->close();
+            
+            // If the user is found, return the user ID
+            if ($id) {
+                return $id;
+            } else {
+                return false;
+            }
+        }
     }
 
 ?>

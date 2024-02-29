@@ -25,20 +25,43 @@
         /**
          * Inicia sesión con el nombre de usuario y contraseña proporcionados.
          */
-        function inicio_sesion(){
+        // Inicio_sesion method
+        function inicio_sesion() {
+            // Validate input
             $nombre = $_POST["nombre"];
             $pw = $_POST["pw"];
             
-            // Validación antes de iniciar sesión
-            if($this->validar($nombre,$pw)){
-                if($this->modelo->comprobar_usuario($nombre,$pw)){
-                    // Redirigir a la vista correspondiente para usuarios normales
-                    $this->view = "menu_tareas";
+            if ($this->validar($nombre, $pw)) {
+                if ($this->modelo->comprobar_usuario($nombre, $pw)) {
+                    // Get the user ID from the model after successful login
+                    $user_id = $this->modelo->obtener_id_usuario($nombre);
+                    
+                    // Start the session
+                    session_start();
+
+                    // Set the user ID in the session
+                    $_SESSION['user_id'] = $user_id;
+
+                    // Redirect to the appropriate view for normal users
+                    header('Location: index.php?controller=tarea&action=menu_tareas');
+                    exit();
                 } else {
+                    // Set error message if login fails
                     $_GET["error"] = $this->modelo->error;
                 }
             }
         }
+
+        // checkSession method
+        public function checkSession() {
+            session_start();
+
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: index.php?controller=sesion&action=mostrar_inicio_sesion');
+                exit();
+            }
+        }
+        
 
         /**
          * Valida si los campos del formulario no están vacíos.

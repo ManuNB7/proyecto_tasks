@@ -6,7 +6,6 @@
 <h2>Formulario de Tarea Prinicipal y Subtareas</h2>
 <form action="index.php?controller=tarea&action=guardar_subtareas" method="POST" enctype="multipart/form-data">
     <!-- Agregar campo oculto para el idUsuario -->
-    <input type="hidden" name="idUsuario" value="<?php echo $datos['idUsuario']; ?>">
     <h3><?php echo $datos['titulo']; ?></h3>
     <input type="hidden" name="titulo" value="<?php echo $datos['titulo']; ?>">
     <label for="detalle">Detalle:</label>
@@ -25,4 +24,5 @@
         <input type="date" name="subtarea[<?php echo $i; ?>][fecha]">
     <?php endfor; ?>
     <input type="submit" value="Guardar">
+    <a href="index.php?controller=tarea&action=form_tareas" class="boton-forms">Volver atrás</a>
 </form>

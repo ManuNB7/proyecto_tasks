@@ -1,4 +1,6 @@
-<?php if(isset($_GET["msg"])){ ?>
+<?php
+echo "<p>Your user ID: " . $_SESSION['user_id'] . "</p>";
+if(isset($_GET["msg"])){ ?>
     <h2 id="<?php echo $_GET["tipomsg"]; ?>">
         <?php echo $_GET["msg"]; ?>
     </h2>
