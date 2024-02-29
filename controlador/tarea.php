@@ -64,12 +64,6 @@
 
         /**
          * Método para listar las tareas.
-         * 
-         * Establece el título de la página como "Listar tareas",
-         * la vista como "menu_listar", y realiza una simulación
-         * del ID de usuario (en este caso, 4). Luego, llama al
-         * método 'listar_tareas' del modelo pasando el ID de usuario
-         * como argumento y retorna el resultado.
          */
         public function listar_tarea() {
             // Check if there's an active session and get the user ID
@@ -93,14 +87,6 @@
 
         /**
          * Método para ver una tarea específica.
-         * 
-         * Establece el título de la página como "Listar tareas",
-         * la vista como "ver_tarea", y obtiene el ID de la tarea
-         * desde la variable $_GET si está presente, de lo contrario,
-         * establece $idTarea como null. Realiza una simulación del ID
-         * de usuario (en este caso, 4). Luego, llama al método
-         * 'obtener_tarea_por_id' del modelo pasando el ID de la tarea
-         * y el ID de usuario como argumentos y retorna el resultado.
          */
         public function ver_tarea() {
             // Check if there's an active session and get the user ID
@@ -128,49 +114,31 @@
         /************GUARDAR TAREAS Y SUBTAREAS************/
         /**
          * Método para guardar una tarea principal.
-         * 
-         * Establece la vista a utilizar como "form_subtarea".
-         * Obtiene los datos de la tarea principal desde el formulario POST,
-         * incluyendo el título, el número de subtareas y el ID del usuario.
-         * Retorna un array con los datos obtenidos.
          */
         public function guardar_tarea() {
-            // Check if there's an active session and get the user ID
-            session_start(); // Start the session if it's not already started
-            if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
-        
-                $this->authController->checkSession();
-                $this->view = "form_subtarea";
-                
-                // Obtener los datos de la tarea principal
-                $titulo = $_POST['titulo'];
-                // Obtener número de subtareas
-                $num_subtareas = $_POST['num_subtareas'];
-                
-                // Crear un array con los datos de la tarea
-                $datos = $array_datos = array(
-                    "titulo" => $titulo,
-                    "num_subtareas" => $num_subtareas,
-                    "idUsuario" => $idUsuario
-                );
-                
-                return $datos;
-            } else {
-                // If there's no active session, redirect to the login page
-                header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
-                exit();
-            }
+            $this->authController->checkSession();
+            $this->view = "form_subtarea";
+            
+            // Obtener los datos de la tarea principal
+            $titulo = $_POST['titulo'];
+            //$idUsuario = $_POST['idUsuario']; // Nuevo campo para el usuario
+            // Simular el ID del usuario (en este caso, 4)
+           
+            // Obtener número de subtareas
+            $num_subtareas = $_POST['num_subtareas'];
+            
+            // Crear un array con los datos de la tarea
+            $datos = $array_datos = array(
+                "titulo" => $titulo,
+                "num_subtareas" => $num_subtareas,
+            );
+            
+            return $datos;
         }
         
 
         /**
          * Método para guardar subtareas de una tarea principal.
-         * 
-         * Establece la vista a utilizar como "form_tarea".
-         * Obtiene los datos de la tarea y sus subtareas desde el formulario POST,
-         * valida los datos y realiza la inserción en la base de datos.
-         * Retorna un mensaje de éxito o error y redirige a la lista de tareas.
          */
         public function guardar_subtareas() {
             // Check if there's an active session and get the user ID
@@ -237,12 +205,7 @@
         /********PROCESO MODIFICACIÓN********/
         /**
         * Método para modificar una tarea existente.
-         * 
-         * Establece el título de la página como "Modificar tarea"
-         * y la vista como "form_modificar". Obtiene el ID de la tarea
-         * a modificar desde la variable $_GET. Llama al método del modelo
-         * encargado de listar la tarea a modificar y retorna el resultado.
-         */
+        */
         public function modificar_tarea() {
             $this->titulo = "Modificar tarea";
             $this->view = "form_modificar";
@@ -255,11 +218,6 @@
         
         /**
          * Método para guardar la modificación de una tarea.
-         * 
-         * Obtiene el ID de la tarea a modificar desde el formulario POST,
-         * así como los datos modificados de la tarea y sus subtareas.
-         * Valida los datos y realiza la modificación en la base de datos.
-         * Retorna un mensaje de éxito o error y redirige a la lista de tareas.
          */
         public function guardar_modificacion() {
             // Obtiene el id
@@ -329,12 +287,6 @@
         
         /**
          * Método para mostrar el formulario de agregar subtareas.
-         * 
-         * Establece el título de la página como "Agregar subtarea" y la vista como "form_subtarea2".
-         * Obtiene el ID de la tarea desde la URL.
-         * Obtiene todas las tareas del usuario.
-         * Busca la tarea correspondiente al ID en la lista de tareas.
-         * Retorna un array con los datos necesarios para la vista.
          */
         public function vista_subtarea() {
             // Check if there's an active session and get the user ID
@@ -380,10 +332,6 @@
         /**
          * Método para agregar una subtarea.
          * 
-         * Establece la vista como "form_subtarea2".
-         * Obtiene los datos de la subtarea desde el formulario POST.
-         * Valida los datos y realiza la inserción en la base de datos.
-         * Retorna un mensaje de éxito o error y redirige a la lista de tareas.
          */
         public function agregar_subtarea() {
             $this->view = "form_subtarea2";
@@ -417,10 +365,6 @@
         /************COMPLETAR SUBTAREA************/
         /**
          * Método para marcar una subtarea como completada.
-         * 
-         * Obtiene el ID de la subtarea desde la URL.
-         * Marca la subtarea correspondiente como completada en la base de datos.
-         * Establece un mensaje de éxito y redirige a la lista de subtareas completadas.
          */
         public function marcar_completada() {
             // Check if there's an active session and get the user ID
@@ -449,10 +393,6 @@
         
         /**
          * Método para listar las subtareas completadas.
-         * 
-         * Establece el título de la página como "Subtareas completadas" y la vista como "menu_completa".
-         * Obtiene el ID del usuario actual.
-         * Retorna las subtareas completadas del usuario actual.
          */
         public function listar_completadas() {
             // Check if there's an active session and get the user ID
@@ -476,10 +416,6 @@
         
         /**
          * Método para mostrar el formulario de confirmación de borrado de tarea.
-         * 
-         * Obtiene el ID de la tarea desde la URL.
-         * Establece la vista como "form_eliminar".
-         * Retorna el ID de la tarea para su posterior procesamiento.
          */
         public function borrado() {
             // Obtiene el id de la tarea
@@ -491,12 +427,6 @@
         
         /**
          * Método para eliminar una tarea.
-         * 
-         * Obtiene el ID de la tarea desde la URL.
-         * Verifica si la tarea existe en la base de datos.
-         * Si la tarea existe, la elimina y establece un mensaje de éxito.
-         * Si la tarea no existe, establece un mensaje de error.
-         * Retorna la lista actualizada de tareas.
          */
         public function eliminar_tarea() {
             $id = $_GET['id'] ?? '';

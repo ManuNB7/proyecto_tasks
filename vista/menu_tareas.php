@@ -7,29 +7,26 @@
     </header>
     <div class="container">
         <div class="hero">
-            <?php
-                // Check if the session variable 'nombre' (username) is set
-                if (isset($_SESSION['nombre'])) {
-                    // If the session variable is set, display a personalized greeting
-                    echo "<h2>Bienvenid@, " . $_SESSION['nombre'] . ".</h2>";
+        <?php
 
-                    // Check if the session variable 'user_id' is set (assuming 'user_id' is the user ID)
-                    if (isset($_SESSION['user_id'])) {
-                        echo "<p>Your user ID: " . $_SESSION['user_id'] . "</p>";
-                    }
+            // Check if the session variable 'user_id' is set
+            if (isset($_SESSION['user_id'])) {
+                // If the session variable is set, display a personalized greeting
+                echo "<h2>Bienvenid@, " . $_SESSION['nombre'] . ".</h2>";
+                echo "<p>Your user ID: " . $_SESSION['user_id'] . "</p>";
             ?>
-                    <p>La mejor manera de organizar tus tareas y subtareas de forma fácil y rápida.</p>
-                    <a href='index.php?controller=tarea&action=form_tarea' class="cta-btn">Crear nueva tarea</a>
-                    <a href='index.php?controller=tarea&action=listar_tarea' class="cta-btn">Ver mis tareas</a>
+                <p>La mejor manera de organizar tus tareas y subtareas de forma fácil y rápida.</p>
+                <a href='index.php?controller=tarea&action=form_tarea' class="cta-btn">Crear nueva tarea</a>
+                <a href='index.php?controller=tarea&action=listar_tarea' class="cta-btn">Ver mis tareas</a>
             <?php
-                } else {
-                    // If the session variable is not set, display a generic message and a login button
+            } else {
+                // If the session variable is not set, display a generic message and a login button
             ?>
-                    <h2>Bienvenido a Tasks</h2>
-                    <p>La mejor manera de organizar tus tareas y subtareas de forma fácil y rápida.</p>
-                    <a href='index.php?controller=sesion&action=form' class="cta-btn">Iniciar sesión</a>
+                <h2>Bienvenido a Tasks</h2>
+                <p>La mejor manera de organizar tus tareas y subtareas de forma fácil y rápida.</p>
+                <a href='index.php?controller=sesion&action=form' class="cta-btn">Iniciar sesión</a>
             <?php
-                }
+            }
             ?>
         </div>
         <div class="features">

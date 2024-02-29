@@ -32,14 +32,15 @@
         /**
          * Comprueba si las credenciales del usuario son válidas.
          */
-        function comprobar_usuario($login,$pw){
+        // comprobar_usuario method
+        function comprobar_usuario($login, $pw) {
             $sql = "SELECT ".$this->id.",".$this->nombre.", ".$this->pw." 
             FROM ".$this->tabla." 
             WHERE ".$this->nombre."= ? OR ".$this->correo." = ?;";
             $stmt = $this->conexion->prepare($sql);
             $stmt->bind_param('ss',$login,$login);
             $stmt->execute();
-            $stmt->bind_result($id,$nombre,$pwhash);
+            $stmt->bind_result($id, $nombre, $pwhash);
             $stmt->fetch();
             $stmt->close();
             $pwcorrecta = password_verify($pw,$pwhash);
@@ -47,11 +48,10 @@
                 $this->error="Usuario y/o contraseña incorrectos";
                 return false;
             } else {
-                $_SESSION["id"] = $id;
-                $_SESSION["nombre"] = $nombre;
                 return true;
             }
         }
+
 
         public function obtener_id_usuario($nombre_usuario) {
             // Perform a database query to retrieve the user ID based on the username
