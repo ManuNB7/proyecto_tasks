@@ -1,10 +1,4 @@
 <body>
-    <header>
-        <div class="container">
-            <h1>Tasks</h1>
-            <p>Organiza tus tareas de manera efectiva</p>
-        </div>
-    </header>
     <div class="container">
         <div class="hero">
         <?php
@@ -12,12 +6,15 @@
                 echo "<h2>Bienvenid@, " . $_SESSION['nombre'] . ".</h2>";
                 echo "<p>User ID: " . $_SESSION['user_id'] . "</p>";
             ?>
-                <p>La mejor manera de organizar tus tareas y subtareas de forma fácil y rápida.</p>
                 <a href='index.php?controller=tarea&action=form_tarea' class="cta-btn">Crear nueva tarea</a>
                 <a href='index.php?controller=tarea&action=listar_tarea' class="cta-btn">Ver mis tareas</a>
             <?php
             } else {
             ?>
+                <div class="container">
+                    <h1>Tasks</h1>
+                    <p>Organiza tus tareas de manera efectiva</p>
+                </div>
                 <h2>Bienvenido a Tasks</h2>
                 <p>La mejor manera de organizar tus tareas y subtareas de forma fácil y rápida.</p>
                 <a href='index.php?controller=sesion&action=form' class="cta-btn">Iniciar sesión</a>

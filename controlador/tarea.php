@@ -142,13 +142,12 @@
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error al guardar la tarea. Por favor, inténtelo de nuevo.";
                 }
-                // Redirigir a la lista de tareas
-                return $this->listar_tarea();
             } else {
-                // If there's no active session, redirect to the login page
                 header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
                 exit();
             }
+            // Redirigir a la lista de tareas
+            return $this->listar_tarea();
         }
         
         /********PROCESO MODIFICACIÓN********/
