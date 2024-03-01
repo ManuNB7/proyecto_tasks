@@ -14,6 +14,8 @@
     <input type="date" name="fecha">
     <label for="archivo_principal">Archivo:</label>
     <input type="file" name="archivo_principal">
+    <br>
+    <hr>
     <?php for ($i = 1; $i <= $datos['num_subtareas']; $i++): ?>
         <h3>Subtarea <?php echo $i; ?></h3>
         <label for="subtitulo<?php echo $i; ?>">Título:</label>
@@ -24,5 +26,5 @@
         <input type="date" name="subtarea[<?php echo $i; ?>][fecha]">
     <?php endfor; ?>
     <input type="submit" value="Guardar">
-    <a href="index.php?controller=tarea&action=form_tareas" class="boton-forms">Volver atrás</a>
+    <a href="index.php?controller=tarea&action=form_tarea" class="boton-forms">Volver atrás</a>
 </form>

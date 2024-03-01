@@ -30,7 +30,7 @@ if(isset($_GET["msg"])){ ?>
                                 if (in_array($file_extension, array("jpg", "jpeg", "png", "gif"))) {
                                     echo '<strong>Archivo adjunto: <br></strong> <img src="img/archivos/' . $tarea['archivo'] . '" alt="Imagen adjunta" class="img-small"><br>';
                                 } else {
-                                    echo '<strong>Archivo adjunto:</strong> <a href="' . $tarea['archivo'] . '" target="_blank">Descargar archivo</a><br>';
+                                    echo '<strong>Archivo adjunto:</strong> <a href="img/archivos/' . $tarea['archivo'] . '" target="_blank" download>Descargar archivo</a><br>';
                                 }
                                 ?>
                             <?php } ?>
