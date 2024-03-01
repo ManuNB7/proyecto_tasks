@@ -19,7 +19,7 @@
     <?php for ($i = 1; $i <= $datos['num_subtareas']; $i++): ?>
         <h3>Subtarea <?php echo $i; ?></h3>
         <label for="subtitulo<?php echo $i; ?>">Título:</label>
-        <input type="text" name="subtarea[<?php echo $i; ?>][titulo]" required>
+        <input type="text" name="subtarea[<?php echo $i; ?>][titulo]">
         <label for="subdescripcion<?php echo $i; ?>">Descripción:</label>
         <textarea name="subtarea[<?php echo $i; ?>][detalle]"></textarea>
         <label for="subfecha<?php echo $i; ?>">Fecha:</label>

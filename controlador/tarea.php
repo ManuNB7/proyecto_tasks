@@ -107,12 +107,6 @@
                 //Comprueba que sea un array
                 $subtareas = isset($_POST['subtarea']) ? $_POST['subtarea'] : array();
                 
-                if (!$this->validarTarea($titulo, $detalle, $fecha, $subtareas)) {
-                    $_GET["tipomsg"] = "error";
-                    $_GET["msg"] = "Error: Datos de tarea o subtareas no válidos.";
-                    return;
-                }
-        
                 // Inicializar la variable $nombre_archivo
                 $nombre_archivo = null;
                 // Manejo de la subida de archivos
@@ -131,7 +125,15 @@
                         return;
                     }
                 }
-        
+
+                // Validar tarea y subtareas
+                $error = $this->validarDatos($titulo, $detalle, $subtareas, $nombre_archivo);
+                if ($error !== true) {
+                    $_GET["tipomsg"] = "error";
+                    $_GET["msg"] = "Error: " . $error;
+                    return;
+                }
+
                 // Insertar la tarea en la base de datos            
                 $idTar = $this->modelo->insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo, $idUsuario);
                 // Verificar si la tarea se insertó correctamente
@@ -179,13 +181,6 @@
         
             // Obtiene las subtareas
             $subtareas = isset($_POST['subtarea']) ? $_POST['subtarea'] : array();
-        
-            if (!$this->validarTarea($titulo, $detalle, $fecha, $subtareas)) {
-                $_GET["tipomsg"] = "error";
-                $_GET["msg"] = "Error: Datos de tarea o subtareas no válidos.";
-                return;
-            }
-            
             // Inicializar la variable $nombre_archivo
             $nombre_archivo = null;
             // Manejo de la subida de archivos
@@ -204,7 +199,15 @@
                     return;
                 }
             }
-            
+
+            // Validar tarea y subtareas
+            $error = $this->validarDatos($titulo, $detalle, $subtareas, $nombre_archivo);
+            if ($error !== true) {
+                $_GET["tipomsg"] = "error";
+                $_GET["msg"] = "Error: " . $error;
+                return;
+            }
+
             // Comprueba que haya subtareas
             if (empty($subtareas)) {
                 // Si no hay subtareas, guarda la modificación de la principal
@@ -287,12 +290,6 @@
             $fecha = isset($_POST['fecha']) ? $_POST['fecha'] : '';
             $idTarea = isset($_POST['idTarea']) ? $_POST['idTarea'] : null;
             
-            if (!$this->validarTarea($titulo, $detalle, $fecha)) {
-                $_GET["tipomsg"] = "error";
-                $_GET["msg"] = "Error: Datos de subtarea no válidos.";
-                return;
-            }
-            
             $resultado = $this->modelo->agregar_subtarea($idTarea, $titulo, $detalle, $fecha);
             
             if ($resultado) {
@@ -368,7 +365,7 @@
             return $this->listar_tarea();
         }
 
-        /*SUGERENCIAS*/
+        /************SUGERENCIAS************/
 
         public function listar_sugerencias() {
             $this->authController->checkSession();
@@ -379,10 +376,55 @@
                 header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
                 exit();
             }
-        }        
+        }      
+
+        /************VALIDACIONES************/      
+        private function validarDatos($titulo, $detalle, $subtareas, $nombre_archivo = null) {
+            if (empty($titulo)) {
+                return "Debes rellenar el título.";
+            }
+            if (is_numeric(substr($titulo, 0, 1))) {
+                return "El título no puede comenzar por un número.";
+            }
+            if (strlen($titulo) > 50 || strlen($detalle) > 2000) {
+                return "Uno de los campos excede el límite de caracteres.";
+            }
+            if (!preg_match('/^[a-zA-ZÑñÁáÉéÍíÓóÚúÜü][a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü ]{0,49}$/', $titulo)) {
+                return "El título no puede contener carácteres especiales.";
+            }
+        
+            if ($nombre_archivo !== null) {
+                // Validar archivo adjunto
+                if ($nombre_archivo['size'] > 6 * 1024 * 1024) {
+                    return "El archivo adjunto no puede pesar más de 6 MB.";
+                }
+                $ext = pathinfo($nombre_archivo["name"], PATHINFO_EXTENSION);
+                $extensiones = array('jpg', 'png', 'jpeg', 'gif', 'pdf', 'html');
+                if (!in_array(strtolower($ext), $extensiones)) {
+                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF, HTML.";
+                }
+            }
+
+            // Validar subtareas
+            foreach ($subtareas as $subtarea) {
+                // Validar título de subtarea
+                if (empty($subtarea['titulo'])) {
+                    return "Debes rellenar el título de todas las subtareas.";
+                }
+                if (is_numeric(substr($subtarea['titulo'], 0, 1))) {
+                    return "El título de una subtarea no puede comenzar por un número.";
+                }
+                if (strlen($subtarea['titulo']) > 50 || strlen($subtarea['detalle']) > 2000) {
+                    return "Uno de los campos de subtarea excede el límite de caracteres.";
+                }
+                if (!preg_match('/^[a-zA-ZÑñÁáÉéÍíÓóÚúÜü][a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü ]{0,49}$/', $subtarea['titulo'])) {
+                    return "El título de una subtarea no puede contener caracteres especiales.";
+                }
+            }
+            return true;
+        }
 
         /************EXPORTAR PDF************/
-
         /**
          * Método para exportar un listado de tareas y subtareas a un archivo PDF.
          */
@@ -461,66 +503,6 @@
                 exit();
             }
         }
-        
-
-
-        private function validarTarea($titulo, $detalle, $subtareas) {
-            // Valida los campos de los formularios 
-            if (empty($titulo)) {
-                $_GET["tipomsg"] = "error";
-                $_GET["msg"] = "Debes rellenar el título.";
-                return false;
-            }
-        
-            if (is_numeric(substr($titulo, 0, 1))) {
-                $_GET["tipomsg"] = "error";
-                $_GET["msg"] = "El título no puede comenzar por un número.";
-                return false;
-            }
-        
-            if (strlen($titulo) > 50 || strlen($detalle) > 2000) {
-                $_GET["tipomsg"] = "error";
-                $_GET["msg"] = "Uno de los campos excede el límite de caracteres.";
-                return false;
-            }
-        
-            if (!preg_match('/^[a-zA-ZÑñÁáÉéÍíÓóÚúÜü][a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü ]{0,49}$/', $titulo)) {
-                $_GET["tipomsg"] = "error";
-                $_GET["msg"] = "El título no puede contener carácteres especiales.";
-                return false;
-            }
-        /*
-            // Validar subtareas
-            foreach ($subtareas as $subtarea) {
-                if (empty($subtarea)) {
-                    $_GET["tipomsg"] = "error";
-                    $_GET["msg"] = "Debes completar todas las subtareas.";
-                    return false;
-                }
-        
-                if (is_numeric(substr($subtarea, 0, 1))) {
-                    $_GET["tipomsg"] = "error";
-                    $_GET["msg"] = "El título de una subtarea no puede comenzar por un número.";
-                    return false;
-                }
-        
-                if (strlen($subtarea) > 50) {
-                    $_GET["tipomsg"] = "error";
-                    $_GET["msg"] = "Uno de los títulos de subtarea excede el límite de caracteres.";
-                    return false;
-                }
-        
-                // Comprueba que el campo título solo contenga letras, números, espacios y una serie de carácteres concretos
-                if (!preg_match('/^[a-zA-ZÑñÁáÉéÍíÓóÚúÜü][a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü ]{0,49}$/', $subtarea)) {
-                    $_GET["tipomsg"] = "error";
-                    $_GET["msg"] = "El título de una subtarea no puede contener carácteres especiales.";
-                    return false;
-                }
-            }*/
-        
-            // Si todas las validaciones pasan, devuelve verdadero
-            return true;
-        }
-
+    
     }
 ?>

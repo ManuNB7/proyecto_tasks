@@ -7,7 +7,7 @@
 <form action="index.php?controller=tarea&action=guardar_modificacion&id=<?php echo $datos['idTar']; ?>" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="idTarea" value="<?php echo $datos['idTar']; ?>">
     <label for="titulo">Título:</label>
-    <input type="text" name="titulo" value="<?php echo htmlspecialchars($datos['titulo'], ENT_QUOTES); ?>">
+    <input type="text" name="titulo" value="<?php echo htmlspecialchars($datos['titulo'], ENT_QUOTES); ?>"required>
     <label for="detalle">Detalle:</label>
     <textarea name="detalle"><?php echo htmlspecialchars($datos['detalle'], ENT_QUOTES); ?></textarea>
     <label for="fecha">Fecha:</label>
