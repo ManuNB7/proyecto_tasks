@@ -94,7 +94,6 @@
          * Método para guardar subtareas de una tarea principal.
          */
         public function guardar_subtareas() {
-            // Check if there's an active session and get the user ID
             $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
                 $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
@@ -239,7 +238,6 @@
          * Método para mostrar el formulario de agregar subtareas.
          */
         public function vista_subtarea() {
-            // Check if there's an active session and get the user ID
             $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
                 $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
@@ -272,7 +270,6 @@
                 // Retornar los datos a la vista
                 return $datos;
             } else {
-                // If there's no active session, redirect to the login page
                 header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
                 exit();
             }
