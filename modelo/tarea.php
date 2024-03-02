@@ -30,17 +30,11 @@
             $resultado = $stmt->get_result();
             $tareas = $resultado->fetch_all(MYSQLI_ASSOC);
             
-            foreach ($tareas as &$tarea) {
-                $idTarea = $tarea['idTar'];
-                $subtareas = $this->obtener_subtareas($idTarea);
-                $tarea['subtareas'] = $subtareas;
-            }
-            
             return $tareas;
         }
         
         /**
-         * Método para obtener una tarea por su ID y el ID del usuario.
+         * Método para obtener una tarea por su ID.
          */
         public function obtener_tarea_por_id($idTarea) {
             $sql = "SELECT * FROM tareas WHERE idTar = ?";
@@ -93,14 +87,13 @@
                 // Verificar si la fecha está vacía y convertirla en NULL si es necesario
                 $detalle_insertar = empty($detalle) ? null : $detalle;
                 $fecha_insertar = empty($fecha) ? null : $fecha;
-        
                 $file_insertar = ($nombre_archivo !== null) ? $nombre_archivo : null;
         
                 // Consulta SQL para insertar en la tabla 'tareas'
                 if ($file_insertar !== null) {
-                    $sql = "INSERT INTO tareas(titulo, detalle, fecha, archivo, idUsuario) VALUES (?,?,?,?,?)"; // Agregar idUsuario al INSERT
+                    $sql = "INSERT INTO tareas(titulo, detalle, fecha, archivo, idUsuario) VALUES (?,?,?,?,?)"; 
                 } else {
-                    $sql = "INSERT INTO tareas(titulo, detalle, fecha, idUsuario) VALUES (?,?,?,?)"; // Agregar idUsuario al INSERT
+                    $sql = "INSERT INTO tareas(titulo, detalle, fecha, idUsuario) VALUES (?,?,?,?)";
                 }
         
                 $stmt = $this->conexion->prepare($sql);
