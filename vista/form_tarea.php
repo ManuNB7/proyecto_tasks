@@ -8,7 +8,7 @@
 
 <form action="index.php?controller=tarea&action=guardar_tarea" method="POST" class="box1">
     <label for="titulo">Título:</label>
-    <input type="text" name="titulo" required>
+    <input type="text" name="titulo">
     <label for="num_subtareas">Número de Subtareas:</label>
     <input type="number" name="num_subtareas" required>
     <input type="submit" value="Continuar">

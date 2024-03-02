@@ -8,7 +8,7 @@
     <input type="hidden" name="idTarea" value="<?php echo htmlspecialchars($datos['idTarea'], ENT_QUOTES); ?>">
     <h3>Subtarea</h3>
     <label for="subtitulo">Título:</label>
-    <input type="text" name="titulo" required>
+    <input type="text" name="titulo">
     <label for="subdescripcion">Descripción:</label>
     <textarea name="detalle"></textarea>
     <label for="fecha">Fecha:</label>

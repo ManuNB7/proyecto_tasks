@@ -204,7 +204,7 @@
             if ($error !== true) {
                 $_GET["tipomsg"] = "error";
                 $_GET["msg"] = "Error: " . $error;
-                return;
+                return $this->modificar_tarea();
             }
 
             // Comprueba que haya subtareas
@@ -286,6 +286,22 @@
             $detalle = isset($_POST['detalle']) ? $_POST['detalle'] : '';
             $fecha = isset($_POST['fecha']) ? $_POST['fecha'] : '';
             $idTarea = isset($_POST['idTarea']) ? $_POST['idTarea'] : null;
+        
+            // Verificar si $_POST['subtarea'] es un array
+            if (isset($_POST['subtarea']) && is_array($_POST['subtarea'])) {
+                $subtareas = $_POST['subtarea'];
+            } else {
+                // Si no es un array, inicializar $subtareas como un array vacío
+                $subtareas = array();
+            }
+        
+            // Validar tarea y subtareas
+            $error = $this->validarDatos($titulo, $detalle, $subtareas);
+            if ($error !== true) {
+                $_GET["tipomsg"] = "error";
+                $_GET["msg"] = "Error: " . $error;
+                return $this->listar_tarea();
+            }
             
             $resultado = $this->modelo->agregar_subtarea($idTarea, $titulo, $detalle, $fecha);
             
@@ -298,6 +314,8 @@
             }
             return $this->listar_tarea();
         }
+        
+        
         
         /************COMPLETAR SUBTAREA************/
         /**
@@ -376,7 +394,7 @@
         }      
 
         /************VALIDACIONES************/      
-        private function validarDatos($titulo, $detalle, $subtareas, $nombre_archivo = null) {
+        private function validarDatos($titulo, $detalle, $subtareas = null, $nombre_archivo = null) {
             if (empty($titulo)) {
                 return "Debes rellenar el título.";
             }
@@ -387,21 +405,21 @@
                 return "Uno de los campos excede el límite de caracteres.";
             }
             if (!preg_match('/^[a-zA-ZÑñÁáÉéÍíÓóÚúÜü][a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü ]{0,49}$/', $titulo)) {
-                return "El título no puede contener carácteres especiales.";
+                return "El título no puede contener caracteres especiales.";
             }
         
-            if ($nombre_archivo !== null) {
+            if (is_array($nombre_archivo) && $nombre_archivo['size'] > 0) {
                 // Validar archivo adjunto
                 if ($nombre_archivo['size'] > 6 * 1024 * 1024) {
                     return "El archivo adjunto no puede pesar más de 6 MB.";
                 }
                 $ext = pathinfo($nombre_archivo["name"], PATHINFO_EXTENSION);
-                $extensiones = array('jpg', 'png', 'jpeg', 'gif', 'pdf', 'html');
+                $extensiones = array('jpg', 'png', 'gif', 'pdf', 'html');
                 if (!in_array(strtolower($ext), $extensiones)) {
-                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF, HTML.";
+                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, GIF, PDF, HTML.";
                 }
             }
-
+            
             // Validar subtareas
             foreach ($subtareas as $subtarea) {
                 // Validar título de subtarea
@@ -418,8 +436,9 @@
                     return "El título de una subtarea no puede contener caracteres especiales.";
                 }
             }
-            return true;
+            return false; // Retorna falso si la validación es exitosa
         }
+        
 
         /************EXPORTAR PDF************/
         /**

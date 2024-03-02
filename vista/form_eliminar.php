@@ -10,7 +10,7 @@ $id = $_GET['id'] ?? '';
 
 <div id="eliminar">
     <h2>¿Estás seguro de que deseas eliminar esta tarea?</h2>
-    Las subtareas asociadas a esta tarea se eliminarán y no aparecerán en completadas.
+    <h4 align="center">Las subtareas asociadas a esta tarea se eliminarán y no aparecerán en completadas.</h4>
     <div class="contenedor-botones">
     <a href="index.php?controller=tarea&action=eliminar_tarea&id=<?php echo $id ?>" class="boton-forms">Sí</a> | <a href="index.php?controller=tarea&action=listar_tarea" class="boton-forms">No</a>
     </div>
