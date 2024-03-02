@@ -130,7 +130,7 @@
                 if ($error !== true) {
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error: " . $error;
-                    return;
+                    return $this->guardar_tarea();
                 }
 
                 // Insertar la tarea en la base de datos            
@@ -414,11 +414,11 @@
                     return "El archivo adjunto no puede pesar más de 6 MB.";
                 }
                 $ext = pathinfo($nombre_archivo["name"], PATHINFO_EXTENSION);
-                $extensiones = array('jpg', 'png', 'gif', 'pdf', 'html');
+                $extensiones = array('jpg', 'png', 'jpeg', 'gif', 'pdf', 'html');
                 if (!in_array(strtolower($ext), $extensiones)) {
-                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, GIF, PDF, HTML.";
+                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF, HTML.";
                 }
-            }
+            }            
             
             // Validar subtareas
             foreach ($subtareas as $subtarea) {
@@ -436,8 +436,8 @@
                     return "El título de una subtarea no puede contener caracteres especiales.";
                 }
             }
-            return false; // Retorna falso si la validación es exitosa
-        }
+            return true; // Retorna falso si la validación es exitosa
+        }      
         
 
         /************EXPORTAR PDF************/
