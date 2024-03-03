@@ -15,7 +15,7 @@
         <a href='index.php?controller=tarea&action=listar_tarea' class="menu-contenido">Listar tareas</a>
         <a href='index.php?controller=tarea&action=listar_completadas' class="menu-contenido">Subtareas completadas</a>
         <a href='index.php?controller=tarea&action=listar_sugerencias' class="menu-contenido">Sugerencias</a>
-        <a href="index.php?controller=sesion&action=cerrar_sesion" class="menu-contenido">Cerrar sesión</a>
+        <a href="index.php?controller=sesion&action=cerrar_sesion" class="menu-contenido" id="cerrar">Cerrar sesión</a>
     </nav>
 <?php } ?>
 

@@ -73,6 +73,10 @@
         /**
          * Método para guardar una tarea principal.
          */
+        /************GUARDAR TAREAS Y SUBTAREAS************/
+        /**
+         * Método para guardar una tarea principal.
+         */
         public function guardar_tarea() {
             $this->authController->checkSession();
             $this->view = "form_subtarea";
@@ -130,7 +134,7 @@
                 if ($error !== true) {
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error: " . $error;
-                    return $this->guardar_tarea();
+                    return;
                 }
 
                 // Insertar la tarea en la base de datos            
@@ -408,17 +412,23 @@
                 return "El título no puede contener caracteres especiales.";
             }
         
-            if (is_array($nombre_archivo) && $nombre_archivo['size'] > 0) {
-                // Validar archivo adjunto
-                if ($nombre_archivo['size'] > 6 * 1024 * 1024) {
-                    return "El archivo adjunto no puede pesar más de 6 MB.";
+            // Validar archivo adjunto
+            // Verificar si se ha proporcionado un archivo adjunto
+            if (!empty($_FILES['archivo_principal']['name'])) {
+                if ($_FILES['archivo_principal']['error'] !== UPLOAD_ERR_OK) {
+                    return "Error al subir el archivo adjunto.";
                 }
-                $ext = pathinfo($nombre_archivo["name"], PATHINFO_EXTENSION);
+
+                $ext = pathinfo($_FILES['archivo_principal']["name"], PATHINFO_EXTENSION);
                 $extensiones = array('jpg', 'png', 'jpeg', 'gif', 'pdf', 'html');
                 if (!in_array(strtolower($ext), $extensiones)) {
                     return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF, HTML.";
                 }
-            }            
+
+                if ($_FILES['archivo_principal']['size'] > 6 * 1024 * 1024) {
+                    return "El archivo adjunto no puede pesar más de 6 MB.";
+                }
+            }                  
             
             // Validar subtareas
             foreach ($subtareas as $subtarea) {
@@ -436,7 +446,7 @@
                     return "El título de una subtarea no puede contener caracteres especiales.";
                 }
             }
-            return true; // Retorna falso si la validación es exitosa
+            return true;
         }      
         
 
