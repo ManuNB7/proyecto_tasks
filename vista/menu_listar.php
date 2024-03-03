@@ -1,5 +1,4 @@
 <?php
-echo "<p>User ID: " . $_SESSION['user_id'] . "</p>";
 if(isset($_GET["msg"])){ ?>
     <h2 id="<?php echo $_GET["tipomsg"]; ?>">
         <?php echo $_GET["msg"]; ?>
