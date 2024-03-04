@@ -11,7 +11,7 @@ CREATE TABLE tareas(
     detalle VARCHAR(80) NULL,
     fecha DATE NULL,
     archivo BLOB NULL,
-    idUsuario TINYINT unsigned,
+    idUsuario TINYINT unsigned NOT NULL,
     CONSTRAINT FK_usuario_tareas FOREIGN KEY (idUsuario) REFERENCES usuarios(id)
 );
 
@@ -20,7 +20,7 @@ CREATE TABLE subtareas(
     titulo VARCHAR(50) NOT NULL,
     detalle VARCHAR(80) NULL,
     fecha DATE NULL,
-    completada BOOLEAN NULL,
-    idTar SMALLINT unsigned,
+    completada bit NULL,
+    idTar SMALLINT unsigned NOT NULL,
     CONSTRAINT FK_subtareas_tareas FOREIGN KEY (idTar) REFERENCES tareas(idTar) ON DELETE CASCADE ON UPDATE CASCADE
 );
