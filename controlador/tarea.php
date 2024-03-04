@@ -73,10 +73,6 @@
         /**
          * Método para guardar una tarea principal.
          */
-        /************GUARDAR TAREAS Y SUBTAREAS************/
-        /**
-         * Método para guardar una tarea principal.
-         */
         public function guardar_tarea() {
             $this->authController->checkSession();
             $this->view = "form_subtarea";
