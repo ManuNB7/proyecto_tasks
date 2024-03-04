@@ -20,7 +20,7 @@ CREATE TABLE subtareas(
     titulo VARCHAR(50) NOT NULL,
     detalle VARCHAR(80) NULL,
     fecha DATE NULL,
-    completada BIT NULL,
+    completada BIT NULL DEFAULT 0,
     idTar SMALLINT unsigned NOT NULL,
     CONSTRAINT FK_subtareas_tareas FOREIGN KEY (idTar) REFERENCES tareas(idTar) ON DELETE CASCADE ON UPDATE CASCADE
 );

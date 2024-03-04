@@ -57,7 +57,7 @@
          *
          */
         public function obtener_subtareas($idTarea){
-            $sql = "SELECT * FROM subtareas WHERE idTar = ? AND completada is NULL";
+            $sql = "SELECT * FROM subtareas WHERE idTar = ? AND completada = 0";
             $stmt = $this->conexion->prepare($sql);
             $stmt->bind_param("i", $idTarea);
             $stmt->execute();
