@@ -380,18 +380,6 @@
             return $this->listar_tarea();
         }
 
-        /************SUGERENCIAS************/
-
-        public function listar_sugerencias() {
-            $this->authController->checkSession();
-            if (isset($_SESSION['user_id'])) {
-                $this->titulo = "(-Sugerencias-)";
-                $this->view = "sugerencias";
-            } else {
-                header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
-                exit();
-            }
-        }      
 
         /************VALIDACIONES************/      
         private function validarDatos($titulo, $detalle, $subtareas = null) {
