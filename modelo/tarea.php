@@ -77,7 +77,7 @@
          * Si hay subtareas proporcionadas, prepara y ejecuta consultas SQL para insertar cada subtarea en la tabla 'subtareas'.
          *
          */
-        public function insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo, $idUsuario) { // Agregar $idUsuario al método
+        public function insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo, $idUsuario) {
             try {
                 $this->conexion->autocommit(false);
                 $this->conexion->begin_transaction();
@@ -114,11 +114,11 @@
                     
                     // Itera sobre cada subtarea en el arreglo de subtareas
                     foreach ($subtareas as $subtarea) {
-                        // Verifica si la subtarea actual es un arreglo
-                        if (is_array($subtarea)) {
-                            // Obtiene el título/detalle/fecja de la subtarea o asigna una cadena vacía si no está definido
-                            $titulo_sub = $subtarea['titulo'] ?? '';
-                            $detalle_sub = $subtarea['detalle'] ?? '';
+                        // Verifica si la subtarea actual tiene al menos un campo rellenado
+                        if (!empty($subtarea['titulo']) || !empty($subtarea['detalle']) || !empty($subtarea['fecha'])) {
+                            // Asigna los valores correspondientes o NULL si los campos no están rellenados
+                            $titulo_sub = $subtarea['titulo'];
+                            $detalle_sub = !empty($subtarea['detalle']) ? $subtarea['detalle'] : null;
                             $fecha_sub = empty($subtarea['fecha']) ? null : $subtarea['fecha'];
                             
                             $stmt->bind_param("sssi", $titulo_sub, $detalle_sub, $fecha_sub, $idTar);
@@ -136,6 +136,9 @@
                 return false;
             }
         }
+        
+        
+        
 
         /********PROCESO MODIFICACIÓN********/
 
