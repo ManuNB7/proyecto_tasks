@@ -23,7 +23,7 @@
         ?>
     <?php } ?>
     <label for="archivo_principal">Archivo:</label>
-    Selecciona un nuevo archivo para cambiarlo (Si no seleccionas ninguno, se eliminará el anterior).
+    Selecciona un nuevo archivo para cambiarlo.
     <input type="file" name="archivo_principal">
     <?php foreach ($datos['subtareas'] as $index => $subtarea): ?>
         <h3>Subtarea <?php echo $index + 1; ?></h3>

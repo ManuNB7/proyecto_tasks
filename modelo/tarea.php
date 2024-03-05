@@ -161,7 +161,7 @@
          * Método para modificar una tarea y sus subtareas.
          */
         
-        public function modificar_tarea($idTarea, $titulo, $detalle, $fecha, $subtareas, $nombre_archivo) {
+         public function modificar_tarea($idTarea, $titulo, $detalle, $fecha, $subtareas, $nombre_archivo) {
             if ($titulo === null || $detalle === null || $fecha === null && empty($subtareas)) {
                 return true;
             }
@@ -172,9 +172,17 @@
                 $detalle_insertar = empty($detalle) ? null : $detalle;
                 $fecha_insertar = empty($fecha) ? null : $fecha;
         
-                $sql_update_tarea = "UPDATE tareas SET titulo = ?, detalle = ?, fecha = ?, archivo = ? WHERE idTar = ?";
-                $stmt = $this->conexion->prepare($sql_update_tarea);
-                $stmt->bind_param("ssssi", $titulo, $detalle_insertar, $fecha_insertar, $nombre_archivo, $idTarea);
+                // Verifica si se proporcionó un nuevo archivo, de lo contrario, mantiene el archivo existente
+                if ($nombre_archivo === null) {
+                    $sql_update_tarea = "UPDATE tareas SET titulo = ?, detalle = ?, fecha = ? WHERE idTar = ?";
+                    $stmt = $this->conexion->prepare($sql_update_tarea);
+                    $stmt->bind_param("sssi", $titulo, $detalle_insertar, $fecha_insertar, $idTarea);
+                } else {
+                    $sql_update_tarea = "UPDATE tareas SET titulo = ?, detalle = ?, fecha = ?, archivo = ? WHERE idTar = ?";
+                    $stmt = $this->conexion->prepare($sql_update_tarea);
+                    $stmt->bind_param("ssssi", $titulo, $detalle_insertar, $fecha_insertar, $nombre_archivo, $idTarea);
+                }
+                
                 $stmt->execute();
         
                 if (!empty($subtareas) && is_array($subtareas)) {
@@ -203,6 +211,7 @@
                 return false;
             }
         }
+        
 
         /**
          * Método para agregar una subtarea a una tarea existente.
