@@ -16,9 +16,9 @@
         <?php
         $file_extension = pathinfo($datos['archivo'], PATHINFO_EXTENSION);
         if (in_array($file_extension, array("jpg", "jpeg", "png", "gif"))) {
-            echo '<img src="uploads/archivos/' . $datos['archivo'] . '" alt="Imagen adjunta" class="img-small">';
+            echo '<img src="uploads/' . $datos['archivo'] . '" alt="Imagen adjunta" class="img-small">';
         } else {
-            echo '<p>Archivo: <a href="uploads/archivos/' . $datos['archivo'] . '" target="_blank">Descargar archivo</a></p>';
+            echo '<p>Archivo: <a href="uploads/' . $datos['archivo'] . '" target="_blank">Descargar archivo</a></p>';
         }
         ?>
     <?php } ?>

@@ -112,7 +112,7 @@
                 if (!empty($_FILES['archivo_principal']['name'])) {
                     // Verifica si se ha seleccionado un archivo para cargar
                     $uploadedFile = $_FILES['archivo_principal']; // Asigna el array $_FILES['archivo_principal'] a una variable
-                    $carpeta_destino = 'uploads/archivos/'; // Carpeta donde se guardarán los archivos cargados
+                    $carpeta_destino = 'uploads/'; // Carpeta donde se guardarán los archivos cargados
                     $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION); // Obtiene la extensión del archivo cargado
                     // Genera un nombre único para el archivo combinando un identificador único y la extensión del archivo
                     $nombre_archivo = uniqid() . "." . $ext;
@@ -186,7 +186,7 @@
             if (!empty($_FILES['archivo_principal']['name'])) {
                 // Verifica si se ha seleccionado un archivo para cargar
                 $uploadedFile = $_FILES['archivo_principal']; // Asigna el array $_FILES['archivo_principal'] a una variable
-                $carpeta_destino = 'uploads/archivos/'; // Carpeta donde se guardarán los archivos cargados
+                $carpeta_destino = 'uploads/'; // Carpeta donde se guardarán los archivos cargados
                 $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION); // Obtiene la extensión del archivo cargado
                 // Genera un nombre único para el archivo combinando un identificador único y la extensión del archivo
                 $nombre_archivo = uniqid() . "." . $ext;
