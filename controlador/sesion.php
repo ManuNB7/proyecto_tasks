@@ -27,16 +27,13 @@
          */
         // Inicio_sesion method
         function inicio_sesion() {
-            // Validate input
             $nombre = $_POST["nombre"];
             $pw = $_POST["pw"];
             
             if ($this->validar($nombre, $pw)) {
                 if ($this->modelo->comprobar_usuario($nombre, $pw)) {
-                    // Get the user ID from the model after successful login
                     $user_id = $this->modelo->obtener_id_usuario($nombre);
                     
-                    // Start the session (if not already started)
                     if (session_status() === PHP_SESSION_NONE) {
                         session_start();
                     }
@@ -46,11 +43,10 @@
                     // Set the user ID in the session
                     $_SESSION['nombre'] = $nombre;
 
-                    // Redirect to the appropriate view for normal users
+                    // Redirect para usuarios
                     header('Location: index.php?controller=tarea&action=menu_tareas');
                     exit();
                 } else {
-                    // Set error message if login fails
                     $_GET["error"] = $this->modelo->error;
                 }
             }
@@ -72,15 +68,14 @@
          * Cierra la sesión del usuario.
          */
         function cerrar_sesion(){
-            // Start the session (if not already started)
+            // Empieza sesion si no la hay
             if (session_status() === PHP_SESSION_NONE) {
                 session_start();
             }
 
-            // Clear all session variables
             $_SESSION = array();
 
-            // Destroy the session
+            // Destruye la sesión
             session_destroy();
         }
         /**
