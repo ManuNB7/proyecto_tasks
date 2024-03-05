@@ -38,7 +38,8 @@
             FROM ".$this->tabla." 
             WHERE ".$this->nombre."= ? OR ".$this->correo." = ?;";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param('ss',$login,$login);
+            $stmt->bind_param('ss', $login, $login); // Aquí se unen ambos parámetros $login
+
             $stmt->execute();
             $stmt->bind_result($id, $nombre, $pwhash);
             $stmt->fetch();
@@ -53,23 +54,24 @@
         }
 
 
-        public function obtener_id_usuario($nombre_usuario) {
-            // Perform a database query to retrieve the user ID based on the username
-            $sql = "SELECT ".$this->id." FROM ".$this->tabla." WHERE ".$this->nombre." = ?";
+        public function obtener_id_usuario($login) {
+            // Coge el nombre y/o correo
+            $sql = "SELECT ".$this->id." FROM ".$this->tabla." WHERE ".$this->nombre." = ? OR ".$this->correo." = ?";
             $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param('s', $nombre_usuario);
+            $stmt->bind_param('ss', $login, $login);
             $stmt->execute();
             $stmt->bind_result($id);
             $stmt->fetch();
             $stmt->close();
             
-            // If the user is found, return the user ID
+            // Retorna el id
             if ($id) {
                 return $id;
             } else {
                 return false;
             }
         }
+        
     }
 
 ?>
