@@ -12,7 +12,7 @@
     <textarea name="detalle"></textarea>
     <label for="fecha">Fecha:</label>
     <input type="date" name="fecha">
-    <label for="archivo_principal">Archivo:</label>
+    <label for="archivo_principal">Archivo: (se admiten JPG, PNG, JPEG, GIF, PDF, HTML.)</label>
     <input type="file" name="archivo_principal">
     <br>
     <hr>
