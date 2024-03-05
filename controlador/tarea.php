@@ -96,7 +96,7 @@
         public function guardar_subtareas() {
             $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
+                $idUsuario = $_SESSION['user_id']; // Obtiene el id de la sesión
                 
                 // Obtener los datos de la tarea del formulario
                 $titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
@@ -112,7 +112,7 @@
                 if (!empty($_FILES['archivo_principal']['name'])) {
                     // Verifica si se ha seleccionado un archivo para cargar
                     $uploadedFile = $_FILES['archivo_principal']; // Asigna el array $_FILES['archivo_principal'] a una variable
-                    $carpeta_destino = 'img/archivos/'; // Carpeta donde se guardarán los archivos cargados
+                    $carpeta_destino = 'uploads/archivos/'; // Carpeta donde se guardarán los archivos cargados
                     $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION); // Obtiene la extensión del archivo cargado
                     // Genera un nombre único para el archivo combinando un identificador único y la extensión del archivo
                     $nombre_archivo = uniqid() . "." . $ext;
@@ -186,7 +186,7 @@
             if (!empty($_FILES['archivo_principal']['name'])) {
                 // Verifica si se ha seleccionado un archivo para cargar
                 $uploadedFile = $_FILES['archivo_principal']; // Asigna el array $_FILES['archivo_principal'] a una variable
-                $carpeta_destino = 'img/archivos/'; // Carpeta donde se guardarán los archivos cargados
+                $carpeta_destino = 'uploads/archivos/'; // Carpeta donde se guardarán los archivos cargados
                 $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION); // Obtiene la extensión del archivo cargado
                 // Genera un nombre único para el archivo combinando un identificador único y la extensión del archivo
                 $nombre_archivo = uniqid() . "." . $ext;
@@ -394,18 +394,12 @@
         }      
 
         /************VALIDACIONES************/      
-        private function validarDatos($titulo, $detalle, $subtareas = null, $nombre_archivo = null) {
+        private function validarDatos($titulo, $detalle, $subtareas = null) {
             if (empty($titulo)) {
                 return "Debes rellenar el título.";
             }
-            if (is_numeric(substr($titulo, 0, 1))) {
-                return "El título no puede comenzar por un número.";
-            }
             if (strlen($titulo) > 50 || strlen($detalle) > 2000) {
                 return "Uno de los campos excede el límite de caracteres.";
-            }
-            if (!preg_match('/^[a-zA-ZÑñÁáÉéÍíÓóÚúÜü][a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü ]{0,49}$/', $titulo)) {
-                return "El título no puede contener caracteres especiales.";
             }
         
             // Validar archivo adjunto
@@ -416,9 +410,9 @@
                 }
 
                 $ext = pathinfo($_FILES['archivo_principal']["name"], PATHINFO_EXTENSION);
-                $extensiones = array('jpg', 'png', 'jpeg', 'gif', 'pdf', 'html', 'rar');
+                $extensiones = array('jpg', 'png', 'jpeg', 'gif', 'pdf', 'html');
                 if (!in_array(strtolower($ext), $extensiones)) {
-                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF, HTML, RAR.";
+                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF, HTML.";
                 }
 
                 if ($_FILES['archivo_principal']['size'] > 6 * 1024 * 1024) {
@@ -432,14 +426,8 @@
                 if (empty($subtarea['titulo'])) {
                     return "Debes rellenar el título de todas las subtareas.";
                 }
-                if (is_numeric(substr($subtarea['titulo'], 0, 1))) {
-                    return "El título de una subtarea no puede comenzar por un número.";
-                }
                 if (strlen($subtarea['titulo']) > 50 || strlen($subtarea['detalle']) > 2000) {
                     return "Uno de los campos de subtarea excede el límite de caracteres.";
-                }
-                if (!preg_match('/^[a-zA-ZÑñÁáÉéÍíÓóÚúÜü][a-zA-Z0-9ÑñÁáÉéÍíÓóÚúÜü ]{0,49}$/', $subtarea['titulo'])) {
-                    return "El título de una subtarea no puede contener caracteres especiales.";
                 }
             }
             return true;
@@ -486,7 +474,7 @@
                 tr:nth-child(odd) {
                     background-color: #f9f9f9;
                 }
-                img {
+                uploads {
                     max-width: 100px;
                     height: auto;
                 }

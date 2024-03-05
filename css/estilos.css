@@ -22,7 +22,7 @@ body {
     padding: 20px;
     width: 200px;
     min-height: 100vh;
-    background-image: url('../img/lateral.png');
+    background-image: url('../uploads/lateral.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -107,7 +107,7 @@ i{
     height: 50px;
 }
 
-.img-small {
+.uploads-small {
     max-width: 150px;
     max-height: 150px;
 }
