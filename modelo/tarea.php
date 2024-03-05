@@ -171,10 +171,10 @@
             try {
                 $this->conexion->autocommit(false);
                 $this->conexion->begin_transaction();
-        
+
                 $detalle_insertar = empty($detalle) ? null : $detalle;
                 $fecha_insertar = empty($fecha) ? null : $fecha;
-        
+
                 // Verifica si se proporcionó un nuevo archivo, de lo contrario, mantiene el archivo existente
                 if ($nombre_archivo === null) {
                     $sql_update_tarea = "UPDATE tareas SET titulo = ?, detalle = ?, fecha = ? WHERE idTar = ?";
@@ -187,15 +187,15 @@
                 }
                 
                 $stmt->execute();
-        
+
                 if (!empty($subtareas) && is_array($subtareas)) {
                     foreach ($subtareas as $subtarea) {
-                        if (is_array($subtarea)) {
+                        if (is_array($subtarea) && (!empty($subtarea['titulo']) || !empty($subtarea['detalle']) || !empty($subtarea['fecha']))) {
                             $idSub = $subtarea['idSub'] ?? null;
                             $titulo_sub = $subtarea['titulo'] ?? '';
                             $detalle_sub = $subtarea['detalle'] ?? '';
                             $fecha_sub = empty($subtarea['fecha']) ? null : $subtarea['fecha'];
-        
+
                             if ($idSub) {
                                 $sql_update_subtarea = "UPDATE subtareas SET titulo = ?, detalle = ?, fecha = ? WHERE idSub = ?";
                                 $stmt = $this->conexion->prepare($sql_update_subtarea);
@@ -205,7 +205,7 @@
                         }
                     }
                 }
-        
+
                 $this->conexion->commit();
                 return true;
             } catch (mysqli_sql_exception $e) {
@@ -214,7 +214,6 @@
                 return false;
             }
         }
-        
 
         /**
          * Método para agregar una subtarea a una tarea existente.
