@@ -423,9 +423,6 @@
             // Validar subtareas
             foreach ($subtareas as $subtarea) {
                 // Validar título de subtarea
-                if (empty($subtarea['titulo'])) {
-                    return "Debes rellenar el título de todas las subtareas.";
-                }
                 if (strlen($subtarea['titulo']) > 50 || strlen($subtarea['detalle']) > 2000) {
                     return "Uno de los campos de subtarea excede el límite de caracteres.";
                 }

@@ -72,8 +72,6 @@
         /**
          * Método para insertar una nueva tarea y sus subtareas asociadas en la base de datos.
          * 
-         * Inicia una transacción para garantizar la integridad de los datos durante la inserción.
-         * Verifica si la fecha y el detalle de la tarea están vacíos y los convierte en NULL si es necesario.
          * Prepara y ejecuta una consulta SQL para insertar la tarea en la tabla 'tareas'.
          * Obtiene el ID de la tarea recién insertada.
          * Si hay subtareas proporcionadas, prepara y ejecuta consultas SQL para insertar cada subtarea en la tabla 'subtareas'.
