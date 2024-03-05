@@ -23,7 +23,7 @@
         ?>
     <?php } ?>
     <label for="archivo_principal">Archivo:</label>
-    Selecciona un nuevo archivo para cambiarlo.
+    Selecciona un nuevo archivo para cambiarlo. <br>
     <input type="file" name="archivo_principal">
     <?php foreach ($datos['subtareas'] as $index => $subtarea): ?>
         <h3>Subtarea <?php echo $index + 1; ?></h3>
@@ -35,6 +35,7 @@
         <label for="fecha">Fecha:</label>
         <input type="date" name="subtarea[<?php echo $index; ?>][fecha]" value="<?php echo htmlspecialchars($subtarea['fecha'], ENT_QUOTES); ?>">
     <?php endforeach; ?>
+    <br>
     <input type="submit" value="Guardar">
     <a href="index.php?controller=tarea&action=vista_subtarea&id=<?php echo $datos['idTar']; ?>" class="boton-forms">Añadir subtarea</a>
     <a href="index.php?controller=tarea&action=listar_tarea" class="boton-forms">Volver atrás</a>

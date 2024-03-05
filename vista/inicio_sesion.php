@@ -8,6 +8,7 @@
     <input type="text" name="nombre" id="nombre">
     <label for="pw">Contraseña</label>
     <input type="password" name="pw" id="pw">
+    <br>
     <input type="submit" name="enviar" value="Iniciar sesión">
     <!-- Enlace para ir a la vista de registro -->
     <a href="index.php?controller=registro&action=mostrar_registro" class="boton-forms">Registrarse</a>

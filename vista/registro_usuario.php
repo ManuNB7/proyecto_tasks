@@ -9,6 +9,7 @@
     <input type="text" name="correo" id="correo">
     <label for="pw">Contraseña</label>
     <input type="password" name="pw" id="pw">
+    <br>
     <input type="submit" name="enviar">
     <!-- Enlace para ir a la vista de inicio de sesión -->
     <a href="index.php?controller=sesion&action=iniciar_sesion" class="boton-forms">Inicio de sesión</a>
