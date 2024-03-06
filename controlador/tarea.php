@@ -240,17 +240,15 @@
         public function vista_subtarea($idTarea = null, $titulo = "") {
             $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
-                $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
+                $idUsuario = $_SESSION['user_id'];
         
                 $this->titulo = "Agregar subtarea";
                 $this->view = "form_subtarea2";
                 
-                // If $idTarea is not provided, retrieve it from the URL
                 if ($idTarea === null && isset($_GET['id'])) {
                     $idTarea = $_GET['id'];
                 }
-                
-                // If $titulo is not provided, retrieve it from the database
+
                 if ($titulo == "") {
                     // Obtener todas las tareas del usuario
                     $tareas = $this->modelo->listar_tareas($idUsuario);
