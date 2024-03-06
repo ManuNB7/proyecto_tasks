@@ -31,7 +31,7 @@
             $tareas = $resultado->fetch_all(MYSQLI_ASSOC);
             
             return $tareas;
-        }
+        }        
         
         /**
          * Método para obtener una tarea por su ID.
@@ -164,17 +164,18 @@
          * Método para modificar una tarea y sus subtareas.
          */
         
-         public function modificar_tarea($idTarea, $titulo, $detalle, $fecha, $subtareas, $nombre_archivo) {
-            if ($titulo === null || $detalle === null || $fecha === null && empty($subtareas)) {
+        public function modificar_tarea($idTarea, $titulo, $detalle, $fecha, $subtareas, $nombre_archivo) {
+            if ($titulo === null || $fecha === null && empty($subtareas)) {
                 return true;
             }
+        
             try {
                 $this->conexion->autocommit(false);
                 $this->conexion->begin_transaction();
-
-                $detalle_insertar = empty($detalle) ? null : $detalle;
+        
+                $detalle_insertar = (strlen($detalle) > 0 && strlen($detalle) <= 255) ? $detalle : null;
                 $fecha_insertar = empty($fecha) ? null : $fecha;
-
+        
                 // Verifica si se proporcionó un nuevo archivo, de lo contrario, mantiene el archivo existente
                 if ($nombre_archivo === null) {
                     $sql_update_tarea = "UPDATE tareas SET titulo = ?, detalle = ?, fecha = ? WHERE idTar = ?";
@@ -187,15 +188,15 @@
                 }
                 
                 $stmt->execute();
-
+        
                 if (!empty($subtareas) && is_array($subtareas)) {
                     foreach ($subtareas as $subtarea) {
                         if (is_array($subtarea) && (!empty($subtarea['titulo']) || !empty($subtarea['detalle']) || !empty($subtarea['fecha']))) {
                             $idSub = $subtarea['idSub'] ?? null;
                             $titulo_sub = $subtarea['titulo'] ?? '';
-                            $detalle_sub = $subtarea['detalle'] ?? '';
+                            $detalle_sub = (strlen($subtarea['detalle']) > 0 && strlen($subtarea['detalle']) <= 255) ? $subtarea['detalle'] : null;
                             $fecha_sub = empty($subtarea['fecha']) ? null : $subtarea['fecha'];
-
+        
                             if ($idSub) {
                                 $sql_update_subtarea = "UPDATE subtareas SET titulo = ?, detalle = ?, fecha = ? WHERE idSub = ?";
                                 $stmt = $this->conexion->prepare($sql_update_subtarea);
@@ -205,13 +206,30 @@
                         }
                     }
                 }
-
+        
                 $this->conexion->commit();
                 return true;
             } catch (mysqli_sql_exception $e) {
                 $this->conexion->rollback();
                 $this->error = "Error " . $e->getCode() . ": Contacte con el administrador.";
                 return false;
+            }
+        }
+
+        /*Obtner titulo de la tarea de nuevo si falla la validacion al agregar subtareas*/
+        
+        public function obtenerTituloTarea($idTarea) {
+            $sql = "SELECT titulo FROM subtareas WHERE idTar = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("i", $idTarea);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+        
+            if ($resultado->num_rows == 1) {
+                $fila = $resultado->fetch_assoc();
+                return $fila['titulo'];
+            } else {
+                return null;
             }
         }
 

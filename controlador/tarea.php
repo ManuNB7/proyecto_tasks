@@ -237,7 +237,7 @@
         /**
          * Método para mostrar el formulario de agregar subtareas.
          */
-        public function vista_subtarea() {
+        public function vista_subtarea($idTarea = null, $titulo = "") {
             $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
                 $idUsuario = $_SESSION['user_id']; // Get the user ID from the session
@@ -245,25 +245,29 @@
                 $this->titulo = "Agregar subtarea";
                 $this->view = "form_subtarea2";
                 
-                // Obtener el ID de la tarea desde la URL
-                $idTarea = isset($_GET['id']) ? $_GET['id'] : null;
+                // If $idTarea is not provided, retrieve it from the URL
+                if ($idTarea === null && isset($_GET['id'])) {
+                    $idTarea = $_GET['id'];
+                }
                 
-                // Obtener todas las tareas del usuario
-                $tareas = $this->modelo->listar_tareas($idUsuario);
+                // If $titulo is not provided, retrieve it from the database
+                if ($titulo == "") {
+                    // Obtener todas las tareas del usuario
+                    $tareas = $this->modelo->listar_tareas($idUsuario);
                 
-                // Buscar la tarea correspondiente al ID en la lista de tareas
-                $tituloTarea = "";
-                foreach ($tareas as $tarea) {
-                    if ($tarea['idTar'] == $idTarea) {
-                        $tituloTarea = $tarea['titulo'];
-                        break;
+                    // Buscar la tarea correspondiente al ID en la lista de tareas
+                    foreach ($tareas as $tarea) {
+                        if ($tarea['idTar'] == $idTarea) {
+                            $titulo = $tarea['titulo'];
+                            break;
+                        }
                     }
                 }
                 
                 // Crear un array con los datos necesarios para la vista
                 $datos = array(
                     'idTarea' => $idTarea,
-                    'titulo' => $tituloTarea,
+                    'titulo' => $titulo,
                     'idUsuario' => $idUsuario // Agregar el idUsuario a los datos
                 );
                 
@@ -274,6 +278,7 @@
                 exit();
             }
         }
+        
         
         /**
          * Método para agregar una subtarea.
@@ -300,7 +305,8 @@
             if ($error !== true) {
                 $_GET["tipomsg"] = "error";
                 $_GET["msg"] = "Error: " . $error;
-                return $this->listar_tarea();
+                $titulo = $this->modelo->obtenerTituloTarea($idTarea);
+                return $this->vista_subtarea($idTarea, $titulo);
             }
             
             $resultado = $this->modelo->agregar_subtarea($idTarea, $titulo, $detalle, $fecha);
@@ -314,8 +320,7 @@
             }
             return $this->listar_tarea();
         }
-        
-        
+
         
         /************COMPLETAR SUBTAREA************/
         /**
