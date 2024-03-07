@@ -14,28 +14,20 @@
                 <a href="index.php?controller=tarea&action=borrado&id=<?php echo $datos['idTar']; ?>" class="boton-forms" id="boton-del">Eliminar</a>
             </div>
         </div>
-        <table class="tabla-subtareas">
-            <thead>
-                <tr>
-                    <th>Subtarea</th>
-                    <th>Detalle</th>
-                    <th>Fecha</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="menu-contenido">
+            <?php if (!empty($datos['subtareas'])) { ?>
                 <?php foreach ($datos['subtareas'] as $subtarea) { ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($subtarea['titulo'], ENT_QUOTES); ?></td>
-                        <td><?php echo htmlspecialchars($subtarea['detalle'], ENT_QUOTES); ?></td>
-                        <td><?php echo date('d/m/Y', strtotime($subtarea['fecha'])); ?></td>
-                        <td>
-                            <a href="index.php?controller=tarea&action=marcar_completada&idTarea=<?php echo $datos['idTar']; ?>&idSub=<?php echo $subtarea['idSub']; ?>" class="boton-forms" id="boton-com">Completar</a>
-                        </td>
-                    </tr>
+                    <div class="subtarea">
+                        <h3><?php echo htmlspecialchars($subtarea['titulo'], ENT_QUOTES); ?></h3>
+                        <p><?php echo htmlspecialchars($subtarea['detalle'], ENT_QUOTES); ?></p>
+                        <p>Fecha: <?php echo date('d/m/Y', strtotime($subtarea['fecha'])); ?></p>
+                        <a href="index.php?controller=tarea&action=marcar_completada&idTarea=<?php echo $datos['idTar']; ?>&idSub=<?php echo $subtarea['idSub']; ?>" class="boton-forms" id="boton-com">Completar</a>
+                    </div>
                 <?php } ?>
-            </tbody>
-        </table>
+            <?php } else { ?>
+                <h3>No hay subtareas disponibles.</h3>
+            <?php } ?>
+        </div>
     <?php } ?>
 </div>
 <a href="index.php?controller=tarea&action=listar_tarea" class="boton-forms">Volver atrás</a>

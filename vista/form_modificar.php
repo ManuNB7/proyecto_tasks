@@ -22,7 +22,7 @@
         }
         ?>
     <?php } ?>
-    <label for="archivo_principal">(Se admiten JPG, PNG, JPEG, GIF, PDF, HTML.)</label>
+    <label for="archivo_principal">(Se admiten JPG, PNG, JPEG, GIF, PDF. Tamaño máximo 2MB)</label>
     Selecciona un nuevo archivo para cambiarlo. <br>
     <input type="file" name="archivo_principal">
     <?php foreach ($datos['subtareas'] as $index => $subtarea): ?>

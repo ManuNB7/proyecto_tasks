@@ -60,6 +60,13 @@
                 $_GET["error"] = "Debes rellenar el correo, el nombre y la contraseña";
                 return false;
             }
+
+            // Verificar si el correo tiene el formato "@gmail.com"
+            if (!preg_match('/@gmail\.com$/', $correo)) {
+                $_GET["error"] = "El correo debe ser de formato @gmail.com";
+                return false;
+            }
+            
             return true;
         }
     }

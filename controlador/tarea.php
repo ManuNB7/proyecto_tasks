@@ -414,13 +414,13 @@
                 }
 
                 $ext = pathinfo($_FILES['archivo_principal']["name"], PATHINFO_EXTENSION);
-                $extensiones = array('jpg', 'png', 'jpeg', 'gif', 'pdf', 'html');
+                $extensiones = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
                 if (!in_array(strtolower($ext), $extensiones)) {
-                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF, HTML.";
+                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF.";
                 }
 
-                if ($_FILES['archivo_principal']['size'] > 6 * 1024 * 1024) {
-                    return "El archivo adjunto no puede pesar más de 6 MB.";
+                if ($_FILES['archivo_principal']['size'] > 2 * 1024 * 1024) {
+                    return "El archivo adjunto no puede pesar más de 2 MB.";
                 }
             }                  
             

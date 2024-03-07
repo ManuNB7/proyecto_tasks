@@ -4,9 +4,9 @@
 <form action="index.php?controller=registro&action=registrar_usuario" method="POST">
     <?php if(isset($_GET["error"])){ echo "<h2>".$_GET["error"]."</h2>"; } ?>
     <label for="nombre">Nombre de usuario</label>
-    <input type="text" name="nombre" id="nombre">
+    <input type="text" name="nombre" id="nombre" placeholder="Nombre completo o nickname">
     <label for="correo">Correo</label>
-    <input type="text" name="correo" id="correo">
+    <input type="text" name="correo" id="correo" placeholder="correo@gmail.com">
     <label for="pw">Contraseña</label>
     <input type="password" name="pw" id="pw">
     <br>

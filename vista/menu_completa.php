@@ -26,3 +26,4 @@
     </table>
     <?php } ?>
 </div>
+<a href="index.php?controller=tarea&action=listar_tarea" class="boton-forms">Volver al listado</a>

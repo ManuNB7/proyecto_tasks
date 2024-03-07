@@ -52,7 +52,7 @@
             }
         }
 
-        // checkSession method
+        // checkSession método
         public function checkSession() {
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
@@ -84,6 +84,11 @@
         function validar($nombre, $pw){
             if(empty($nombre)||empty($pw)){
                 $_GET["error"] = "Debes rellenar el nombre y la contraseña";
+                return false;
+            }
+        
+            if (preg_match('/^\s*$/', $nombre) || preg_match('/^\s*$/', $pw)) {
+                $_GET["error"] = "No se permiten campos vacíos";
                 return false;
             }
             return true;
