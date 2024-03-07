@@ -7,13 +7,12 @@ body {
     /*background-color: #17191D;*/
     background-repeat: no-repeat;
     background-size: cover;
-  }
-  
-  main{
-    margin: auto;
-  }
+}
 
-  
+main{
+    margin: auto;
+}
+
 /*****************MENU SIDEBAR*****************/
 .menu {
     display: flex;
@@ -27,6 +26,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 
 .menu-contenido {
     padding: 10px;
@@ -172,7 +172,7 @@ hr {
 
 /* Ajuste de tamaño para la columna de archivos */
 .tabla-tareas td.archivos {
-    max-width: 160px; /* Tamaño máximo */
+    max-width: 160%; /* Tamaño máximo */
     white-space: nowrap; /* No permitir saltos de línea */
 }
 
@@ -318,9 +318,6 @@ input[type="submit"] {
 .box1 {
     box-shadow: 0px 5px 10px 0px #9290C3;        
 }
-
-
-
 
 #eliminar{
     background-color: #fff;

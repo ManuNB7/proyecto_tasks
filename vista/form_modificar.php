@@ -18,11 +18,11 @@
         if (in_array($file_extension, array("jpg", "jpeg", "png", "gif"))) {
             echo '<img src="uploads/' . $datos['archivo'] . '" alt="Imagen adjunta" class="img-small">';
         } else {
-            echo '<p>Archivo adjunto: <a href="uploads/' . $datos['archivo'] . '" target="_blank">Descargar archivo</a></p>';
+            echo '<p>Archivo adjunto: ' . htmlspecialchars($datos['archivo'], ENT_QUOTES) . ' - <a href="uploads/' . $datos['archivo'] . '" download>Descargar</a></p>';
         }
         ?>
     <?php } ?>
-    <label for="archivo_principal">Archivo: (se admiten JPG, PNG, JPEG, GIF, PDF, HTML.)</label>
+    <label for="archivo_principal">(Se admiten JPG, PNG, JPEG, GIF, PDF, HTML.)</label>
     Selecciona un nuevo archivo para cambiarlo. <br>
     <input type="file" name="archivo_principal">
     <?php foreach ($datos['subtareas'] as $index => $subtarea): ?>

@@ -106,16 +106,16 @@
                 //Comprueba que sea un array
                 $subtareas = isset($_POST['subtarea']) ? $_POST['subtarea'] : array();
                 
-                // Inicializar la variable $nombre_archivo
+                //Inicializa la variable
                 $nombre_archivo = null;
+
                 // Manejo de la subida de archivos
                 if (!empty($_FILES['archivo_principal']['name'])) {
                     // Verifica si se ha seleccionado un archivo para cargar
                     $uploadedFile = $_FILES['archivo_principal']; // Asigna el array $_FILES['archivo_principal'] a una variable
                     $carpeta_destino = 'uploads/'; // Carpeta donde se guardarán los archivos cargados
-                    $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION); // Obtiene la extensión del archivo cargado
-                    // Genera un nombre único para el archivo combinando un identificador único y la extensión del archivo
-                    $nombre_archivo = uniqid() . "." . $ext;
+                    $nombre_archivo = $uploadedFile["name"]; // Utiliza el nombre original del archivo como nombre de archivo
+
                     // Mueve el archivo cargado a la carpeta de destino
                     if (!move_uploaded_file($uploadedFile['tmp_name'], $carpeta_destino . $nombre_archivo)) {
                         // En caso de error al mover el archivo, establece un mensaje de error y finaliza la ejecución
@@ -130,7 +130,7 @@
                 if ($error !== true) {
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error: " . $error;
-                    return;
+                    return $this->guardar_tarea();
                 }
 
                 // Insertar la tarea en la base de datos            
@@ -180,6 +180,7 @@
         
             // Obtiene las subtareas
             $subtareas = isset($_POST['subtarea']) ? $_POST['subtarea'] : array();
+
             // Inicializar la variable $nombre_archivo
             $nombre_archivo = null;
             // Manejo de la subida de archivos
@@ -187,9 +188,7 @@
                 // Verifica si se ha seleccionado un archivo para cargar
                 $uploadedFile = $_FILES['archivo_principal']; // Asigna el array $_FILES['archivo_principal'] a una variable
                 $carpeta_destino = 'uploads/'; // Carpeta donde se guardarán los archivos cargados
-                $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION); // Obtiene la extensión del archivo cargado
-                // Genera un nombre único para el archivo combinando un identificador único y la extensión del archivo
-                $nombre_archivo = uniqid() . "." . $ext;
+                $nombre_archivo = $uploadedFile["name"]; // Utiliza el nombre original del archivo como nombre de archivo
                 // Mueve el archivo cargado a la carpeta de destino
                 if (!move_uploaded_file($uploadedFile['tmp_name'], $carpeta_destino . $nombre_archivo)) {
                     // En caso de error al mover el archivo, establece un mensaje de error y finaliza la ejecución
@@ -389,7 +388,7 @@
             if (empty($titulo)) {
                 return "Debes rellenar el título.";
             }
-            if (strlen($titulo) > 50 || strlen($detalle) > 2000) {
+            if (strlen($titulo) > 50 || strlen($detalle) > 255) {
                 return "Uno de los campos excede el límite de caracteres.";
             }
         
@@ -414,7 +413,7 @@
             // Validar subtareas
             foreach ($subtareas as $subtarea) {
                 // Validar título de subtarea
-                if (strlen($subtarea['titulo']) > 50 || strlen($subtarea['detalle']) > 2000) {
+                if (strlen($subtarea['titulo']) > 50 || strlen($subtarea['detalle']) > 255) {
                     return "Uno de los campos de subtarea excede el límite de caracteres.";
                 }
             }

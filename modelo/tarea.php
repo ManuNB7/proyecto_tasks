@@ -173,7 +173,7 @@
                 $this->conexion->autocommit(false);
                 $this->conexion->begin_transaction();
         
-                $detalle_insertar = (strlen($detalle) > 0 && strlen($detalle) <= 255) ? $detalle : null;
+                $detalle_insertar = empty($detalle) ? null : $detalle;
                 $fecha_insertar = empty($fecha) ? null : $fecha;
         
                 // Verifica si se proporcionó un nuevo archivo, de lo contrario, mantiene el archivo existente

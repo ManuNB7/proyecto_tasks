@@ -5,7 +5,7 @@
     <?php if(isset($_GET["error"])){ echo "<h2>".$_GET["error"]."</h2>"; } ?>
     <?php if(isset($_GET["exito"])){ echo "<h2>".$_GET["exito"]."</h2>"; } ?>
     <label for="nombre">Nombre de usuario o correo electrónico</label>
-    <input type="text" name="nombre" id="nombre">
+    <input type="text" name="nombre" id="nombre" placeholder="Introduzca sus datos">
     <label for="pw">Contraseña</label>
     <input type="password" name="pw" id="pw">
     <br>
