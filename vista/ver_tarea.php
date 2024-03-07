@@ -14,20 +14,32 @@
                 <a href="index.php?controller=tarea&action=borrado&id=<?php echo $datos['idTar']; ?>" class="boton-forms" id="boton-del">Eliminar</a>
             </div>
         </div>
-        <div class="menu-contenido">
-            <?php if (!empty($datos['subtareas'])) { ?>
+        <table class="tabla-subtareas">
+            <thead>
+                <tr>
+                    <th>Subtarea</th>
+                    <th>Detalle</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
                 <?php foreach ($datos['subtareas'] as $subtarea) { ?>
-                    <div class="subtarea">
-                        <h3><?php echo htmlspecialchars($subtarea['titulo'], ENT_QUOTES); ?></h3>
-                        <p><?php echo htmlspecialchars($subtarea['detalle'], ENT_QUOTES); ?></p>
-                        <p>Fecha: <?php echo date('d/m/Y', strtotime($subtarea['fecha'])); ?></p>
-                        <a href="index.php?controller=tarea&action=marcar_completada&idTarea=<?php echo $datos['idTar']; ?>&idSub=<?php echo $subtarea['idSub']; ?>" class="boton-forms" id="boton-com">Completar</a>
-                    </div>
+                    <tr>
+                        <td><?php echo htmlspecialchars($subtarea['titulo'], ENT_QUOTES); ?></td>
+                        <td><?php echo htmlspecialchars($subtarea['detalle'], ENT_QUOTES); ?></td>
+                        <?php if (!empty($subtarea['fecha'])) { ?> 
+                            <td><?php echo date('d/m/Y', strtotime($subtarea['fecha'])); ?></td>
+                        <?php } else { ?>
+                            <td>Sin fecha</td>
+                        <?php } ?>
+                        <td>
+                            <a href="index.php?controller=tarea&action=marcar_completada&idTarea=<?php echo $datos['idTar']; ?>&idSub=<?php echo $subtarea['idSub']; ?>" class="boton-forms" id="boton-com">Completar</a>
+                        </td>
+                    </tr>
                 <?php } ?>
-            <?php } else { ?>
-                <h3>No hay subtareas disponibles.</h3>
-            <?php } ?>
-        </div>
+            </tbody>
+        </table>
     <?php } ?>
 </div>
 <a href="index.php?controller=tarea&action=listar_tarea" class="boton-forms">Volver atrás</a>
