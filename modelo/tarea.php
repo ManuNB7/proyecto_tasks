@@ -29,6 +29,12 @@
             $stmt->execute();
             $resultado = $stmt->get_result();
             $tareas = $resultado->fetch_all(MYSQLI_ASSOC);
+
+            foreach ($tareas as &$tarea) {
+                $idTarea = $tarea['idTar'];
+                $subtareas = $this->obtener_subtareas($idTarea);
+                $tarea['subtareas'] = $subtareas;
+            }
             
             return $tareas;
         }        

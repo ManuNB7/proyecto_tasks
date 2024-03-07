@@ -457,56 +457,62 @@
                 $pdf->setHeaderData('', PDF_HEADER_LOGO_WIDTH, 'TASKS');
                 $pdf->AddPage();
         
-                $html = '<style>
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-                th, td {
-                    padding: 12px;
-                    border: 1px solid #ccc;
-                    text-align: left;
-                    font-size: 14px;
-                }
-                th {
-                    background-color: #f2f2f2;
-                    color: #333;
-                }
-                tr:nth-child(odd) {
-                    background-color: #f9f9f9;
-                }
-                uploads {
-                    max-width: 100px;
-                    height: auto;
-                }
-                .task-spacing {
-                    height: 20px; /* Adjust as needed */
-                }
+                // Estilos CSS para la tabla
+                $css = '<style>
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                    }
+                    th, td {
+                        padding: 10px;
+                        border: 1px solid #ddd; /* Añade bordes */
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                    td {
+                        text-align: left;
+                    }
+                    .odd {
+                        background-color: #f9f9f9; /* Color de fondo para filas impares */
+                    }
+                    .even {
+                        background-color: #ffffff; /* Color de fondo para filas pares */
+                    }
                 </style>';
-                $html .= '<h1 style="text-align: center;">Listado de tareas y subtareas</h1>';
+        
+                $pdf->writeHTML($css, true, false, true, false, '');
+        
+                $html = '<h1 style="text-align: center;">Listado de tareas y subtareas</h1>';
                 $html .= '<table>';
                 $html .= '<tr><th>TÍTULO</th><th>DETALLE</th><th>FECHA</th></tr>';
         
+                $isOdd = true; // Variable para alternar el color de las filas
                 foreach ($this->modelo->listar_tareas($idUsuario) as $tarea) {
-                    $html .= '<tr>';
-                    $html .= '<td style="font-weight: bold;">' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</td>';
+                    $html .= '<tr class="' . ($isOdd ? 'odd' : 'even') . '">';
+                    $html .= '<td>' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</td>';
                     $html .= '<td>' . htmlspecialchars($tarea['detalle'], ENT_QUOTES) . '</td>';
                     $html .= '<td>' . htmlspecialchars($tarea['fecha'], ENT_QUOTES) . '</td>';
                     $html .= '</tr>';
         
                     if (isset($tarea['subtareas']) && !empty($tarea['subtareas'])) {
                         foreach ($tarea['subtareas'] as $subtarea) {
-                            $html .= '<tr>';
+                            $html .= '<tr class="' . ($isOdd ? 'odd' : 'even') . '">';
                             $html .= '<td style="font-style: italic;">' . htmlspecialchars($subtarea['titulo'], ENT_QUOTES) . '</td>';
                             $html .= '<td>' . htmlspecialchars($subtarea['detalle'], ENT_QUOTES) . '</td>';
                             $html .= '<td>' . htmlspecialchars($subtarea['fecha'], ENT_QUOTES) . '</td>';
                             $html .= '</tr>';
                         }
                     }
-                    $html .= '<tr class="task-spacing"><td colspan="4"></td></tr>';
+        
+                    $isOdd = !$isOdd; // Cambia el color de la siguiente fila
                 }
+        
                 $html .= '</table>';
-
+        
                 $pdf->writeHTML($html, true, false, true, false, '');
                 $pdf->Output('tareas.pdf', 'I');
             } else {
@@ -514,6 +520,7 @@
                 exit();
             }
         }
+        
     
     }
 ?>
