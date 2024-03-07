@@ -28,7 +28,7 @@
                     <tr>
                         <td><?php echo htmlspecialchars($subtarea['titulo'], ENT_QUOTES); ?></td>
                         <td><?php echo htmlspecialchars($subtarea['detalle'], ENT_QUOTES); ?></td>
-                        <td><?php echo htmlspecialchars($subtarea['fecha'], ENT_QUOTES); ?></td>
+                        <td><?php echo date('d/m/Y', strtotime($subtarea['fecha'])); ?></td>
                         <td>
                             <a href="index.php?controller=tarea&action=marcar_completada&idTarea=<?php echo $datos['idTar']; ?>&idSub=<?php echo $subtarea['idSub']; ?>" class="boton-forms" id="boton-com">Completar</a>
                         </td>

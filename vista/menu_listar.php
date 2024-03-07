@@ -22,7 +22,7 @@ if(isset($_GET["msg"])){ ?>
                         <td class="celdas">
                             <strong>Título:</strong> <?php echo htmlspecialchars($tarea['titulo'], ENT_QUOTES); ?><br>
                             <strong>Detalle:</strong> <?php echo htmlspecialchars($tarea['detalle'], ENT_QUOTES); ?><br>
-                            <strong>Fecha:</strong> <?php echo htmlspecialchars($tarea['fecha'], ENT_QUOTES); ?><br>
+                            <strong>Fecha:</strong> <?php echo date('d/m/Y', strtotime($tarea['fecha'])); ?><br>
                             <?php if (!empty($tarea['archivo'])) { ?>
                                 <?php
                                 $file_extension = pathinfo($tarea['archivo'], PATHINFO_EXTENSION);

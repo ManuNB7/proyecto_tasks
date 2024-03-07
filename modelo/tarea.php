@@ -333,6 +333,20 @@
                 return false;
             }
         }
+
+        /*PROCESO SUSTITUCIÓN DE ARCHIVOS*/
+        public function obtenerNombreArchivo($idTarea) {
+            $sql = "SELECT archivo FROM tareas WHERE idTar = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("i", $idTarea);
+            $stmt->execute();
+            $stmt->bind_result($archivo);
+            $stmt->fetch();
+            $stmt->close();
+        
+            return $archivo;
+        }
+        
     }
 
 ?>

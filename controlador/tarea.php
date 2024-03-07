@@ -206,6 +206,20 @@
                 return $this->modificar_tarea();
             }
 
+            // Comprueba si hay un archivo adjunto nuevo
+            if (!empty($nombre_archivo)) {
+                // Obtiene el nombre del archivo anterior
+                $nombre_archivo_anterior = $this->modelo->obtenerNombreArchivo($idTarea);
+                // Elimina el archivo anterior si existe
+                if (!empty($nombre_archivo_anterior)) {
+                    $carpeta_destino = 'uploads/';
+                    $ruta_archivo_anterior = $carpeta_destino . $nombre_archivo_anterior;
+                    if (file_exists($ruta_archivo_anterior)) {
+                        unlink($ruta_archivo_anterior);
+                    }
+                }
+            }
+
             // Comprueba que haya subtareas
             if (empty($subtareas)) {
                 // Si no hay subtareas, guarda la modificación de la principal
