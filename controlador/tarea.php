@@ -198,14 +198,6 @@
                 }
             }
 
-            // Validar tarea y subtareas
-            $error = $this->validarDatos($titulo, $detalle, $subtareas, $nombre_archivo);
-            if ($error !== true) {
-                $_GET["tipomsg"] = "error";
-                $_GET["msg"] = "Error: " . $error;
-                return $this->modificar_tarea();
-            }
-
             // Comprueba si hay un archivo adjunto nuevo
             if (!empty($nombre_archivo)) {
                 // Obtiene el nombre del archivo anterior
@@ -218,6 +210,14 @@
                         unlink($ruta_archivo_anterior);
                     }
                 }
+            }
+
+            // Validar tarea y subtareas
+            $error = $this->validarDatos($titulo, $detalle, $subtareas, $nombre_archivo);
+            if ($error !== true) {
+                $_GET["tipomsg"] = "error";
+                $_GET["msg"] = "Error: " . $error;
+                return $this->modificar_tarea();
             }
 
             // Comprueba que haya subtareas

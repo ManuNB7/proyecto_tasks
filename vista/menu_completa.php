@@ -4,7 +4,7 @@
     </h2>
 <?php } ?>
 <div class="contenedorT">
-       <?php if (empty($datos)) { ?>
+    <?php if (empty($datos)) { ?>
         <h2>No hay subtareas completadas.</h2>
     <?php } else { ?>
     <h2>Listado de tareas con subtareas completadas</h2>

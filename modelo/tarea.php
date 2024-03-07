@@ -276,15 +276,18 @@
             }
         }
         
+
         /**
          * Método para listar las subtareas completadas de un usuario específico.
+         * ordena primero por el título de la tarea y luego por el título de la subtarea.
          */
         public function listar_completadas($idUsuario){
             $sql = "SELECT subtareas.*, tareas.titulo as tarea 
                     FROM subtareas 
                     INNER JOIN tareas ON subtareas.idTar = tareas.idTar 
                     WHERE subtareas.completada = 1 
-                    AND tareas.idUsuario = ?";
+                    AND tareas.idUsuario = ?
+                    ORDER BY tareas.titulo, subtareas.titulo"; 
             $stmt = $this->conexion->prepare($sql);
             $stmt->bind_param("i", $idUsuario);
             $stmt->execute();
@@ -293,6 +296,7 @@
             
             return $subtareas_completadas;
         }
+
 
         /**
          * Realiza una consulta SQL para buscar una tarea con el ID especificado.
