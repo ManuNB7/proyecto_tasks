@@ -490,51 +490,47 @@
                             height: 20px; /* Adjust as needed */
                         }
                     </style>';
-                        
+        
                 // Añade los estilos a la página
                 $pdf->writeHTML($css, true, false, true, false, '');
         
-                // Contenido HTML
-                $html = '<h1 style="text-align: center;">Listado de tareas y subtareas</h1>';
-                $html .= '<table>';
-                $html .= '<tr><th>TÍTULO</th><th>DETALLE</th><th>FECHA</th><th>IMAGEN</th></tr>';
-        
                 // Mostrar la información
                 foreach ($this->modelo->listar_tareas($idUsuario) as $tarea) {
+                    // Contenido HTML para una tabla de tarea
+                    $html = '<h1 style="text-align: center;">Tarea: ' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</h1>';
+                    $html .= '<table>';
+                    $html .= '<tr><th>TÍTULO</th><th>DETALLE</th><th>FECHA</th></tr>';
                     $html .= '<tr>';
                     $html .= '<td style="font-weight: bold;">' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</td>';
                     $html .= '<td>' . htmlspecialchars($tarea['detalle'], ENT_QUOTES) . '</td>';
                     $html .= '<td>' . htmlspecialchars($tarea['fecha'], ENT_QUOTES) . '</td>';
-                    
-                    // Verifica si el archivo es una imagen antes de agregarla
-                    $archivo = 'uploads/' . $tarea['archivo'];
-                    if (is_file($archivo) && getimagesize($archivo)) {
-                        // Agrega la imagen si es válida
-                        $html .= '<td><img src="' . $archivo . '" alt="Task Image"></td>';
-                    } else {
-                        // No agrega nada si el archivo no es una imagen
-                        $html .= '<td>No disponible</td>';
-                    }
-                    
                     $html .= '</tr>';
+                    $html .= '</table>';
         
+                    // Escribe el contenido HTML de la tabla de tarea en el PDF
+                    $pdf->writeHTML($html, true, false, true, false, '');
+        
+                    // Mostrar las subtareas si existen
                     if (isset($tarea['subtareas']) && !empty($tarea['subtareas'])) {
-                        foreach ($tarea['subtareas'] as $subtarea) {
-                            $html .= '<tr>';
-                            $html .= '<td style="font-style: italic;">' . htmlspecialchars($subtarea['titulo'], ENT_QUOTES) . '</td>';
-                            $html .= '<td>' . htmlspecialchars($subtarea['detalle'], ENT_QUOTES) . '</td>';
-                            $html .= '<td>' . htmlspecialchars($subtarea['fecha'], ENT_QUOTES) . '</td>';
-                            $html .= '<td></td>'; // Sin imagen para subtareas
-                            $html .= '</tr>';
-                        }
-                    }
-                    // Añade espacio entre tareas
-                    $html .= '<br>';
-                }
-                $html .= '</table>';
+                        // Contenido HTML para la tabla de subtareas
+                        $html_subtareas = '<h2 style="text-align: center;">Subtareas</h2>';
+                        $html_subtareas .= '<table>';
         
-                // Escribe el contenido HTML en el PDF
-                $pdf->writeHTML($html, true, false, true, false, '');
+                        // Mostrar cada subtarea
+                        foreach ($tarea['subtareas'] as $subtarea) {
+                            $html_subtareas .= '<tr>';
+                            $html_subtareas .= '<td style="font-style: italic;">' . htmlspecialchars($subtarea['titulo'], ENT_QUOTES) . '</td>';
+                            $html_subtareas .= '<td>' . htmlspecialchars($subtarea['detalle'], ENT_QUOTES) . '</td>';
+                            $html_subtareas .= '<td>' . htmlspecialchars($subtarea['fecha'], ENT_QUOTES) . '</td>';
+                            $html_subtareas .= '</tr>';
+                        }
+        
+                        $html_subtareas .= '</table>';
+        
+                        // Escribe el contenido HTML de la tabla de subtareas en el PDF
+                        $pdf->writeHTML($html_subtareas, true, false, true, false, '');
+                    }
+                }
         
                 // Cierre y salida del PDF
                 $pdf->Output('tareas.pdf', 'I');
@@ -543,6 +539,7 @@
                 exit();
             }
         }
+        
         
         
         
