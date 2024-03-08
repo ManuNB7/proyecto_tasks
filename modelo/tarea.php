@@ -107,7 +107,7 @@
                     $stmt->bind_param("sssi", $titulo, $detalle_insertar, $fecha_insertar, $idUsuario);
                 }
                 $stmt->execute();
-        
+                
                 // Obtener el ID de la tarea recién insertada
                 $idTar = $stmt->insert_id;
                 $stmt->close();
@@ -124,7 +124,7 @@
                         if (!empty($subtarea['titulo']) || !empty($subtarea['detalle']) || !empty($subtarea['fecha'])) {
                             // Asigna los valores correspondientes o NULL si los campos no están rellenados
                             $titulo_sub = $subtarea['titulo'];
-                            $detalle_sub = !empty($subtarea['detalle']) ? $subtarea['detalle'] : null;
+                            $detalle_sub = empty($subtarea['detalle']) ? null : $subtarea['detalle'];
                             $fecha_sub = empty($subtarea['fecha']) ? null : $subtarea['fecha'];
                             
                             $stmt->bind_param("sssi", $titulo_sub, $detalle_sub, $fecha_sub, $idTar);
@@ -171,7 +171,7 @@
          */
         
         public function modificar_tarea($idTarea, $titulo, $detalle, $fecha, $subtareas, $nombre_archivo) {
-            if ($titulo === null || $fecha === null && empty($subtareas)) {
+            if ($titulo === null || $detalle === null || $fecha === null && empty($subtareas)) {
                 return true;
             }
         
@@ -181,6 +181,7 @@
         
                 $detalle_insertar = empty($detalle) ? null : $detalle;
                 $fecha_insertar = empty($fecha) ? null : $fecha;
+                
         
                 // Verifica si se proporcionó un nuevo archivo, de lo contrario, mantiene el archivo existente
                 if ($nombre_archivo === null) {
@@ -200,12 +201,12 @@
                         if (is_array($subtarea) && (!empty($subtarea['titulo']) || !empty($subtarea['detalle']) || !empty($subtarea['fecha']))) {
                             $idSub = $subtarea['idSub'] ?? null;
                             $titulo_sub = $subtarea['titulo'] ?? '';
-                            $detalle_sub = (strlen($subtarea['detalle']) > 0 && strlen($subtarea['detalle']) <= 255) ? $subtarea['detalle'] : null;
+                            $detalle_sub = empty($subtarea['detalle']) ? null : $subtarea['detalle'];
                             $fecha_sub = empty($subtarea['fecha']) ? null : $subtarea['fecha'];
         
                             if ($idSub) {
-                                $sql_update_subtarea = "UPDATE subtareas SET titulo = ?, detalle = ?, fecha = ? WHERE idSub = ?";
-                                $stmt = $this->conexion->prepare($sql_update_subtarea);
+                                $sql = "UPDATE subtareas SET titulo = ?, detalle = ?, fecha = ? WHERE idSub = ?";
+                                $stmt = $this->conexion->prepare($sql);
                                 $stmt->bind_param("sssi", $titulo_sub, $detalle_sub, $fecha_sub, $idSub);
                                 $stmt->execute();
                             }

@@ -130,7 +130,7 @@
                 if ($error !== true) {
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error: " . $error;
-                    return $this->guardar_tarea();
+                    return;
                 }
 
                 // Insertar la tarea en la base de datos            
@@ -403,7 +403,7 @@
                 return "Debes rellenar el título.";
             }
             if (strlen($titulo) > 50 || strlen($detalle) > 255) {
-                return "Uno de los campos excede el límite de caracteres.";
+                return "Uno de los campos de la tarea excede el límite de caracteres.";
             }
         
             // Validar archivo adjunto
@@ -428,7 +428,7 @@
             foreach ($subtareas as $subtarea) {
                 // Validar título de subtarea
                 if (strlen($subtarea['titulo']) > 50 || strlen($subtarea['detalle']) > 255) {
-                    return "Uno de los campos de subtarea excede el límite de caracteres.";
+                    return "Uno de los campos de la subtarea excede el límite de caracteres.";
                 }
             }
             return true;
