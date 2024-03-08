@@ -143,15 +143,19 @@ hr {
     font-size: large;
 }
 /* ESTILOS PARA TABLA DE TAREAS */
+/* ESTILOS PARA TABLA DE TAREAS */
 .tabla-tareas {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* Hacer la tabla de tareas fija */
 }
 
 .tabla-tareas th,
 .tabla-tareas td {
-    padding: 8px;
+    padding: 12px; /* Aumentar el padding para hacer las celdas de tareas más grandes */
     text-align: left;
+    overflow: hidden; /* Asegura que el contenido que sobresale se oculte */
+    white-space: normal; /* Permitir saltos de línea */
 }
 
 .tabla-tareas th {
@@ -176,52 +180,34 @@ hr {
     white-space: nowrap; /* No permitir saltos de línea */
 }
 
-/*SUB*/
-.contenedor {
-    margin: 20px;
-}
-
-.titulo-tarea {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.titulo-tarea h1 {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0;
-}
-
-.botones {
-    display: flex;
-}
-
-
-.tabla-subtareas {
-    width: 100%;
+/* ESTILOS PARA TABLA DE OPCIONES */
+.tabla-opciones {
+    width: auto; /* Hacer que la tabla de opciones se ajuste al contenido */
     border-collapse: collapse;
 }
 
-.tabla-subtareas th,
-.tabla-subtareas td {
-    border: 1px solid #ddd;
-    padding: 8px;
+.tabla-opciones th,
+.tabla-opciones td {
+    padding: 6px; /* Reducir el padding para ocupar menos espacio */
     text-align: left;
 }
 
-.tabla-subtareas th {
-    background-color: #f2f2f2;
+.tabla-opciones th {
+    background-color: #F5F5F5;
 }
 
-.tabla-subtareas tr:nth-child(even) {
-    background-color: #f9f9f9;
+.tabla-opciones tbody tr:nth-child(even) {
+    background-color: #E8E8E8;
 }
 
-.tabla-subtareas tr:hover {
-    background-color: #f2f2f2;
+.tabla-opciones tbody tr:nth-child(odd) {
+    background-color: #DADADA;
 }
+
+.tabla-opciones tbody tr:hover {
+    background-color: #C0C0C0; /* Cambio de color al pasar el mouse */
+}
+
 
 .boton-forms {
     display: inline-block;
@@ -391,18 +377,4 @@ h1 {
 .feature p {
     font-size: 16px;
     color: #555;
-}
-
-
-@media only screen and (max-width: 768px) {
-    .menu {
-      width: 100%; /* Adjust width for smaller screens */
-      min-height: auto; /* Remove minimum height */
-      flex-direction: row; /* Change direction for smaller screens */
-    }
-    
-    .menu-contenido {
-      font-size: large; /* Adjust font size for smaller screens */
-      padding: 10px 20px; /* Adjust padding for smaller screens */
-    }
 }
