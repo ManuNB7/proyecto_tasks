@@ -443,110 +443,65 @@
             session_start();
             if (isset($_SESSION['user_id'])) {
                 $idUsuario = $_SESSION['user_id']; // Define $idUsuario dentro del bloque if
-        
+                
                 // Incluye la librería de TCPDF necesaria
                 require_once __DIR__.'/../TCPDF-main/tcpdf.php';
-        
+                
                 // Crea un nuevo documento PDF
                 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        
+                
                 // Información del documento
                 $pdf->SetCreator(PDF_CREATOR);
                 $pdf->SetAuthor('Manuel Nieto Benítez');
                 $pdf->SetTitle('TASKS - PDF');
                 $pdf->SetSubject('Descarga de PDF');
                 $pdf->SetKeywords('Tareas, Subtareas, PDF');
-        
+
                 // Establece el encabezado
                 $pdf->setHeaderData('', PDF_HEADER_LOGO_WIDTH, 'TASKS');
                 // Añade una página
                 $pdf->AddPage();
-        
-                // Estilos en línea para la tabla
-                $css = '
-                    <style>
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                        }
-                        th, td {
-                            padding: 12px;
-                            border: 1px solid #ccc;
-                            text-align: left;
-                            font-size: 14px;
-                        }
-                        th {
-                            background-color: #f2f2f2;
-                            color: #333;
-                        }
-                        tr:nth-child(odd) {
-                            background-color: #f9f9f9;
-                        }
-                        img {
-                            max-width: 100px;
-                            height: auto;
-                        }
-                        .task-spacing {
-                            height: 20px; /* Adjust as needed */
-                        }
-                    </style>';
-        
+
                 // Añade los estilos a la página
-                $pdf->writeHTML($css, true, false, true, false, '');
-        
+                $pdf->writeHTML(true, false, true, false, '');
+                
                 // Mostrar la información
                 foreach ($this->modelo->listar_tareas($idUsuario) as $tarea) {
                     // Contenido HTML para una tabla de tarea
                     $html = '<h1 style="text-align: center;">Tarea: ' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</h1>';
-                    $html .= '<table>';
-                    $html .= '<tr><th>TÍTULO</th><th>DETALLE</th><th>FECHA</th></tr>';
+                    $html .= '<table style="border-collapse: collapse; width: 100%;">';
+                    $html .= '<tr><th style="border: 1px solid #ccc; background-color: #646fa5; color: #fff; padding: 12px; text-align: left;">TÍTULO</th><th style="border: 1px solid #ccc; background-color: #646fa5; color: #fff; padding: 12px; text-align: left;">DETALLE</th><th style="border: 1px solid #ccc; background-color: #646fa5; color: #fff; padding: 12px; text-align: left;">FECHA</th></tr>';
                     $html .= '<tr>';
-                    $html .= '<td style="font-weight: bold;">' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</td>';
-                    $html .= '<td>' . htmlspecialchars($tarea['detalle'], ENT_QUOTES) . '</td>';
-                    $html .= '<td>' . htmlspecialchars($tarea['fecha'], ENT_QUOTES) . '</td>';
+                    $html .= '<td style="border: 1px solid #ccc; font-weight: bold; padding: 12px;">' . htmlspecialchars($tarea['titulo'], ENT_QUOTES) . '</td>';
+                    $html .= '<td style="border: 1px solid #ccc; padding: 12px;">' . htmlspecialchars($tarea['detalle'], ENT_QUOTES) . '</td>';
+                    $html .= '<td style="border: 1px solid #ccc; padding: 12px;">' . htmlspecialchars($tarea['fecha'], ENT_QUOTES) . '</td>';
                     $html .= '</tr>';
-                    $html .= '</table>';
-        
-                    // Escribe el contenido HTML de la tabla de tarea en el PDF
-                    $pdf->writeHTML($html, true, false, true, false, '');
-        
+                    
                     // Mostrar las subtareas si existen
                     if (isset($tarea['subtareas']) && !empty($tarea['subtareas'])) {
-                        // Contenido HTML para la tabla de subtareas
-                        $html_subtareas = '<h2 style="text-align: center;">Subtareas</h2>';
-                        $html_subtareas .= '<table>';
-        
+                        // Agregar fila de subtareas
+                        $html .= '<tr><td colspan="3" style="border: 1px solid #ccc; background-color: #646fa5; color: #fff; padding: 12px; text-align: center;">Subtareas</td></tr>';
+                        
                         // Mostrar cada subtarea
                         foreach ($tarea['subtareas'] as $subtarea) {
-                            $html_subtareas .= '<tr>';
-                            $html_subtareas .= '<td style="font-style: italic;">' . htmlspecialchars($subtarea['titulo'], ENT_QUOTES) . '</td>';
-                            $html_subtareas .= '<td>' . htmlspecialchars($subtarea['detalle'], ENT_QUOTES) . '</td>';
-                            $html_subtareas .= '<td>' . htmlspecialchars($subtarea['fecha'], ENT_QUOTES) . '</td>';
-                            $html_subtareas .= '</tr>';
+                            $html .= '<tr>';
+                            $html .= '<td style="border: 1px solid #ccc; font-style: italic; padding: 12px;">' . htmlspecialchars($subtarea['titulo'], ENT_QUOTES) . '</td>';
+                            $html .= '<td style="border: 1px solid #ccc; padding: 12px;">' . htmlspecialchars($subtarea['detalle'], ENT_QUOTES) . '</td>';
+                            $html .= '<td style="border: 1px solid #ccc; padding: 12px;">' . htmlspecialchars($subtarea['fecha'], ENT_QUOTES) . '</td>';
+                            $html .= '</tr>';
                         }
-        
-                        $html_subtareas .= '</table>';
-        
-                        // Escribe el contenido HTML de la tabla de subtareas en el PDF
-                        $pdf->writeHTML($html_subtareas, true, false, true, false, '');
                     }
+                    $html .= '</table>';
+                    // Escribe el contenido HTML de la tabla de tarea en el PDF
+                    $pdf->writeHTML($html, true, false, true, false, '');
                 }
-        
+
                 // Cierre y salida del PDF
                 $pdf->Output('tareas.pdf', 'I');
             } else {
                 header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
                 exit();
             }
-        }
-        
-        
-        
-        
-        
-        
-        
-        
-    
+        }    
     }
 ?>

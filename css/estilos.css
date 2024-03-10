@@ -4,7 +4,6 @@ body {
     padding: 0;
     display: flex; /* Flexbox para colocar el menú y el contenido */
     background-color: #EEE;
-    /*background-color: #17191D;*/
     background-repeat: no-repeat;
     background-size: cover;
 }
