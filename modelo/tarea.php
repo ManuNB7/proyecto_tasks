@@ -292,8 +292,7 @@
             $sql = "SELECT subtareas.*, tareas.titulo as tarea 
                     FROM subtareas 
                     INNER JOIN tareas ON subtareas.idTar = tareas.idTar 
-                    WHERE subtareas.completada = 1 
-                    AND tareas.idUsuario = ?
+                    WHERE tareas.idUsuario = ?
                     ORDER BY tareas.titulo, subtareas.titulo"; 
             $stmt = $this->conexion->prepare($sql);
             $stmt->bind_param("i", $idUsuario);

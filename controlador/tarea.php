@@ -116,6 +116,13 @@
                     $carpeta_destino = 'uploads/'; // Carpeta donde se guardarán los archivos cargados
                     $nombre_archivo = $uploadedFile["name"]; // Utiliza el nombre original del archivo como nombre de archivo
 
+                    // Validar archivo adjunto
+                    $error_archivo = $this->validarArchivoAdjunto($uploadedFile);
+                    if ($error_archivo !== true) {
+                        $_GET["tipomsg"] = "error";
+                        $_GET["msg"] = "Error: " . $error_archivo;
+                        return;
+                    }
                     // Mueve el archivo cargado a la carpeta de destino
                     if (!move_uploaded_file($uploadedFile['tmp_name'], $carpeta_destino . $nombre_archivo)) {
                         // En caso de error al mover el archivo, establece un mensaje de error y finaliza la ejecución
@@ -126,13 +133,13 @@
                 }
 
                 // Validar tarea y subtareas
-                $error = $this->validarDatos($titulo, $detalle, $subtareas, $nombre_archivo);
+                $error = $this->validarDatos($titulo, $detalle, $subtareas);
                 if ($error !== true) {
                     $_GET["tipomsg"] = "error";
                     $_GET["msg"] = "Error: " . $error;
                     return;
                 }
-
+                
                 // Insertar la tarea en la base de datos            
                 $idTar = $this->modelo->insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo, $idUsuario);
                 // Verificar si la tarea se insertó correctamente
@@ -189,6 +196,15 @@
                 $uploadedFile = $_FILES['archivo_principal']; // Asigna el array $_FILES['archivo_principal'] a una variable
                 $carpeta_destino = 'uploads/'; // Carpeta donde se guardarán los archivos cargados
                 $nombre_archivo = $uploadedFile["name"]; // Utiliza el nombre original del archivo como nombre de archivo
+
+                // Validar archivo adjunto
+                $error_archivo = $this->validarArchivoAdjunto($uploadedFile);
+                if ($error_archivo !== true) {
+                    $_GET["tipomsg"] = "error";
+                    $_GET["msg"] = "Error: " . $error_archivo;
+                    return $this->modificar_tarea();
+                }
+
                 // Mueve el archivo cargado a la carpeta de destino
                 if (!move_uploaded_file($uploadedFile['tmp_name'], $carpeta_destino . $nombre_archivo)) {
                     // En caso de error al mover el archivo, establece un mensaje de error y finaliza la ejecución
@@ -246,6 +262,34 @@
             }
             return $this->listar_tarea();
         }
+
+        /**
+ * Método para validar el archivo adjunto.
+ */
+private function validarArchivoAdjunto($uploadedFile) {
+    // Verificar si se ha seleccionado un archivo para cargar
+    if ($uploadedFile['error'] !== UPLOAD_ERR_OK) {
+        return "Error al subir el archivo adjunto.";
+    }
+
+    // Obtener la extensión del archivo
+    $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION);
+    $extensiones_permitidas = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+
+    // Verificar si la extensión del archivo es válida
+    if (!in_array(strtolower($ext), $extensiones_permitidas)) {
+        return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF.";
+    }
+
+    // Verificar el tamaño del archivo (2 MB máximo)
+    if ($uploadedFile['size'] > 2 * 1024 * 1024) {
+        return "El archivo adjunto no puede pesar más de 2 MB.";
+    }
+
+    // Si pasa todas las validaciones, devolver true
+    return true;
+}
+
         
         /**
          * Método para mostrar el formulario de agregar subtareas.
@@ -405,24 +449,6 @@
             if (strlen($titulo) > 50 || strlen($detalle) > 255) {
                 return "Uno de los campos de la tarea excede el límite de caracteres.";
             }
-        
-            // Validar archivo adjunto
-            // Verificar si se ha proporcionado un archivo adjunto
-            if (!empty($_FILES['archivo_principal']['name'])) {
-                if ($_FILES['archivo_principal']['error'] !== UPLOAD_ERR_OK) {
-                    return "Error al subir el archivo adjunto.";
-                }
-
-                $ext = pathinfo($_FILES['archivo_principal']["name"], PATHINFO_EXTENSION);
-                $extensiones = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
-                if (!in_array(strtolower($ext), $extensiones)) {
-                    return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF.";
-                }
-
-                if ($_FILES['archivo_principal']['size'] > 2 * 1024 * 1024) {
-                    return "El archivo adjunto no puede pesar más de 2 MB.";
-                }
-            }                  
             
             // Validar subtareas
             foreach ($subtareas as $subtarea) {
