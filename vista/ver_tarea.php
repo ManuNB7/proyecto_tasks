@@ -1,14 +1,16 @@
 <?php if(isset($_GET["msg"])){ ?>
-    <h2 id="<?php echo $_GET["tipomsg"] ?>">
-        <?php echo $_GET["msg"] ?>
+    <h2 id="<?php echo $_GET["tipomsg"]; ?>">
+        <?php echo $_GET["msg"]; ?>
     </h2>
 <?php } ?>
 <div class="contenedor">
-    <?php if (empty($datos)) { ?>
-        <h2>No hay subtareas disponibles.</h2>
+    <?php if (empty($datos['subtareas'])) { ?>
+        <h2>No hay subtareas disponibles para esta tarea.</h2>
     <?php } else { ?>
         <div class="titulo-tarea">
             <h1>Tarea: <?php echo htmlspecialchars($datos['titulo'], ENT_QUOTES); ?></h1>
+            <h3>Detalles de la tarea: <?php echo htmlspecialchars($datos['detalle'], ENT_QUOTES); ?></h3>
+            <h3>Fecha: <?php echo !empty($datos['fecha']) ? date('d/m/Y', strtotime($datos['fecha'])) : 'Sin fecha'; ?></h3>
             <br>
         </div>
         <table class="tabla-subtareas">

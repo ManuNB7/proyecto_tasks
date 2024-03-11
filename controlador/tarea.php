@@ -139,7 +139,7 @@
                     $_GET["msg"] = "Error: " . $error;
                     return;
                 }
-                
+
                 // Insertar la tarea en la base de datos            
                 $idTar = $this->modelo->insertar_tarea($titulo, $detalle, $fecha, $subtareas, $nombre_archivo, $idUsuario);
                 // Verificar si la tarea se insertó correctamente
@@ -262,34 +262,6 @@
             }
             return $this->listar_tarea();
         }
-
-        /**
- * Método para validar el archivo adjunto.
- */
-private function validarArchivoAdjunto($uploadedFile) {
-    // Verificar si se ha seleccionado un archivo para cargar
-    if ($uploadedFile['error'] !== UPLOAD_ERR_OK) {
-        return "Error al subir el archivo adjunto.";
-    }
-
-    // Obtener la extensión del archivo
-    $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION);
-    $extensiones_permitidas = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
-
-    // Verificar si la extensión del archivo es válida
-    if (!in_array(strtolower($ext), $extensiones_permitidas)) {
-        return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF.";
-    }
-
-    // Verificar el tamaño del archivo (2 MB máximo)
-    if ($uploadedFile['size'] > 2 * 1024 * 1024) {
-        return "El archivo adjunto no puede pesar más de 2 MB.";
-    }
-
-    // Si pasa todas las validaciones, devolver true
-    return true;
-}
-
         
         /**
          * Método para mostrar el formulario de agregar subtareas.
@@ -458,9 +430,35 @@ private function validarArchivoAdjunto($uploadedFile) {
                 }
             }
             return true;
-        }      
+        }     
         
+        /**
+         * Método para validar el archivo adjunto.
+         */
+        private function validarArchivoAdjunto($uploadedFile) {
+            // Verificar si se ha seleccionado un archivo para cargar
+            if ($uploadedFile['error'] !== UPLOAD_ERR_OK) {
+                return "Error al subir el archivo adjunto.";
+            }
 
+            // Obtener la extensión del archivo
+            $ext = pathinfo($uploadedFile["name"], PATHINFO_EXTENSION);
+            $extensiones_permitidas = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
+
+            // Verificar si la extensión del archivo es válida
+            if (!in_array(strtolower($ext), $extensiones_permitidas)) {
+                return "El archivo adjunto debe tener una de las siguientes extensiones: JPG, PNG, JPEG, GIF, PDF.";
+            }
+
+            // Verificar el tamaño del archivo (2 MB máximo)
+            if ($uploadedFile['size'] > 2 * 1024 * 1024) {
+                return "El archivo adjunto no puede pesar más de 2 MB.";
+            }
+
+            // Si pasa todas las validaciones, devolver true
+            return true;
+        }
+        
         /************EXPORTAR PDF************/
         /**
          * Método para exportar un listado de tareas y subtareas a un archivo PDF.
