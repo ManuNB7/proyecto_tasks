@@ -4,7 +4,7 @@
     </h2>
 <?php } ?>
 
-<h2>Listado de tareas con subtareas completadas</h2>
+<h2>Controla tu trabajo pendiente</h2>
 <?php foreach ($datos as $index => $subtarea) { ?>
     <?php if ($index === 0 || $subtarea['tarea'] !== $datos[$index - 1]['tarea']) { ?>
         <div class="contenedorT">
@@ -44,6 +44,7 @@
                 ?>
                 </tbody>
             </table>
+            <br>
         </div>
     <?php } ?>
 <?php } ?>
