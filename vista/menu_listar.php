@@ -19,8 +19,7 @@ if(isset($_GET["msg"])){ ?>
             <tbody>
                 <?php foreach ($datos as $tarea) { ?>
                     <tr>
-                        <td class="celdas">
-                            <strong>Título:</strong> <?php echo htmlspecialchars($tarea['titulo'], ENT_QUOTES); ?><br>
+                        <td class="celdas"><?php echo htmlspecialchars($tarea['titulo'], ENT_QUOTES); ?><br>
                             <strong>Detalle:</strong> <?php echo htmlspecialchars($tarea['detalle'], ENT_QUOTES); ?><br>
                             <?php if (!empty($tarea['fecha'])) { ?>
                                 <strong>Fecha:</strong> <?php echo date('d/m/Y', strtotime($tarea['fecha'])); ?><br>

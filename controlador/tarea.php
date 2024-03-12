@@ -482,7 +482,7 @@
                 $pdf->SetKeywords('Tareas, Subtareas, PDF');
 
                 // Establece el encabezado
-                $pdf->setHeaderData('', PDF_HEADER_LOGO_WIDTH, 'TASKS');
+                $pdf->setHeaderData('', PDF_HEADER_LOGO_WIDTH, 'LISTADO TASKS');
                 // Añade una página
                 $pdf->AddPage();
 

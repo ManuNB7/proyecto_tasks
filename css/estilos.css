@@ -134,79 +134,40 @@ hr {
 /*****************CONTENEDORES*****************/
 
 /*CONTENEDORES LISTADO*/
-.contenedor {
-    padding: 20px;
-}
-
-.celdas{
-    font-size: large;
-}
-/* ESTILOS PARA TABLA DE TAREAS */
-/* ESTILOS PARA TABLA DE TAREAS */
 .tabla-tareas {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* Hacer la tabla de tareas fija */
 }
 
-.tabla-tareas th,
-.tabla-tareas td {
-    padding: 12px; /* Aumentar el padding para hacer las celdas de tareas más grandes */
-    text-align: left;
-    overflow: hidden; /* Asegura que el contenido que sobresale se oculte */
-    white-space: normal; /* Permitir saltos de línea */
+.tabla-tareas th, .tabla-tareas td {
+    padding: 10px;
+    border: 1px solid #ddd;
 }
 
 .tabla-tareas th {
-    background-color: #F5F5F5;
+    background-color: #f2f2f2;
 }
 
-.tabla-tareas tbody tr:nth-child(even) {
-    background-color: #E8E8E8;
+.celdas {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.tabla-tareas tbody tr:nth-child(odd) {
-    background-color: #DADADA;
+.archivos {
+    text-align: center;
 }
 
-.tabla-tareas tbody tr:hover {
-    background-color: #C0C0C0; /* Cambio de color al pasar el mouse */
+.boton-forms {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 5px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
 }
-
-/* Ajuste de tamaño para la columna de archivos */
-.tabla-tareas td.archivos {
-    max-width: 160%; /* Tamaño máximo */
-    white-space: nowrap; /* No permitir saltos de línea */
-}
-
-/* ESTILOS PARA TABLA DE OPCIONES */
-.tabla-opciones {
-    width: auto; /* Hacer que la tabla de opciones se ajuste al contenido */
-    border-collapse: collapse;
-}
-
-.tabla-opciones th,
-.tabla-opciones td {
-    padding: 6px; /* Reducir el padding para ocupar menos espacio */
-    text-align: left;
-}
-
-.tabla-opciones th {
-    background-color: #F5F5F5;
-}
-
-.tabla-opciones tbody tr:nth-child(even) {
-    background-color: #E8E8E8;
-}
-
-.tabla-opciones tbody tr:nth-child(odd) {
-    background-color: #DADADA;
-}
-
-.tabla-opciones tbody tr:hover {
-    background-color: #C0C0C0; /* Cambio de color al pasar el mouse */
-}
-
 
 .boton-forms {
     display: inline-block;
