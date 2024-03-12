@@ -25,6 +25,23 @@
         <td><?php echo $subtarea['completada'] == 1 ? 'Completada' : 'Pendiente'; ?></td>
     </tr>
     <?php if ($index === count($datos) - 1 || $subtarea['tarea'] !== $datos[$index + 1]['tarea']) { ?>
+                <?php 
+                    // Verificar si todas las subtareas están completadas
+                    $todas_completadas = true;
+                    foreach ($datos as $subt) {
+                        if ($subt['tarea'] === $subtarea['tarea'] && $subt['completada'] != 1) {
+                            $todas_completadas = false;
+                            break;
+                        }
+                    } 
+                    // Si todas las subtareas están completadas, agregar fila extra con enlace de eliminación
+                    if ($todas_completadas) {
+                        echo '<tr>';
+                        echo '<td colspan="2">Todas las subtareas están completadas, ¿eliminar tarea?';
+                        echo '<a href="index.php?controller=tarea&action=borrado&id=' . $subtarea['idTar'] . '" class="boton-forms" id="boton-del">Eliminar</a></td>';
+                        echo '</tr>';
+                    }
+                ?>
                 </tbody>
             </table>
         </div>
