@@ -55,6 +55,9 @@ main{
     text-align: center;
     background-color: rgba(60, 77, 233, 0.2); /* Fondo translúcido */
 }
+
+
+/*****************BOTONES*****************/
 .contenedor-botones {
     text-align: center;
 }
@@ -131,42 +134,34 @@ hr {
     margin-top: 250px;
 }
 
-/*****************CONTENEDORES*****************/
+/*****************TABLAS*****************/
 
-/*CONTENEDORES LISTADO*/
 .tabla-tareas {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: xx-large;
 }
 
 .tabla-tareas th, .tabla-tareas td {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: none;
 }
 
 .tabla-tareas th {
-    background-color: #f2f2f2;
+    background-color: #c4c7ce;
+    font-size: x-large;
 }
 
 .celdas {
-    white-space: nowrap;
+    max-width:500px;
+    white-space: normal;
     overflow: hidden;
-    text-overflow: ellipsis;
+    word-wrap: break-word;
 }
 
 .archivos {
-    text-align: center;
-}
-
-.boton-forms {
-    display: inline-block;
-    padding: 5px 10px;
-    margin: 5px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    text-decoration: none;
-    border-radius: 5px;
+    width: 400px; /* Puedes ajustar este ancho según tus necesidades */
 }
 
 .boton-forms {
@@ -185,8 +180,14 @@ hr {
     background-color: rgb(134, 120, 150);
 }
 
+.subtarea-celda {
+    max-width:700px; /* Puedes ajustar este ancho según tus necesidades */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word; /* Esto permitirá que las palabras largas se rompan y se ajusten dentro de la celda */
+}
 
-/*****************TABLAS*****************/
+/*****************COMPLETADAS*****************/
 .contenedorT {
     margin: 20px;
 }

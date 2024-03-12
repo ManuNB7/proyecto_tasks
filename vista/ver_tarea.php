@@ -8,8 +8,8 @@
         <h2>No hay subtareas disponibles para esta tarea.</h2>
     <?php } else { ?>
         <div class="titulo-tarea">
-            <h1>Tarea: <?php echo htmlspecialchars($datos['titulo'], ENT_QUOTES); ?></h1>
-            <h3>Detalles de la tarea: <?php echo htmlspecialchars($datos['detalle'], ENT_QUOTES); ?></h3>
+            <h1 class="subtarea-celda">Tarea: <?php echo htmlspecialchars($datos['titulo'], ENT_QUOTES); ?></h1>
+            <h3 class="subtarea-celda">Detalles de la tarea: <?php echo htmlspecialchars($datos['detalle'], ENT_QUOTES); ?></h3>
             <h3>Fecha: <?php echo !empty($datos['fecha']) ? date('d/m/Y', strtotime($datos['fecha'])) : 'Sin fecha'; ?></h3>
             <br>
         </div>
@@ -25,8 +25,8 @@
             <tbody>
                 <?php foreach ($datos['subtareas'] as $subtarea) { ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($subtarea['titulo'], ENT_QUOTES); ?></td>
-                        <td><?php echo htmlspecialchars($subtarea['detalle'], ENT_QUOTES); ?></td>
+                        <td class="subtarea-celda"><?php echo htmlspecialchars($subtarea['titulo'], ENT_QUOTES); ?></td>
+                        <td class="subtarea-celda"><?php echo htmlspecialchars($subtarea['detalle'], ENT_QUOTES); ?></td>
                         <?php if (!empty($subtarea['fecha'])) { ?> 
                             <td><?php echo date('d/m/Y', strtotime($subtarea['fecha'])); ?></td>
                         <?php } else { ?>
