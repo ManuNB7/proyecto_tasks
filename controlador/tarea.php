@@ -43,7 +43,7 @@
             if (isset($_SESSION['user_id'])) {
                 $idUsuario = $_SESSION['user_id'];
                 // Buscar la tarea con la fecha de entrega más cercana
-                $tareaCercana = $this->modelo->obtenerTareaFechaProxima($idUsuario); // Este método debería devolver la tarea con la fecha de entrega más cercana
+                $tareaCercana = $this->modelo->obtenerTareaFechaProxima($idUsuario);
                 // Guardar la ID y la fecha de la tarea más cercana en una cookie
                 if ($tareaCercana) {
                     setcookie('tarea_cercana_id', $tareaCercana['idTar'], time() + (86400 * 30), "/"); // Cookie válida por 30 días
@@ -76,7 +76,6 @@
         
         public function ver_sugerencias() {
             $this->authController->checkSession();        
-            // Establecer el título y la vista
             $this->titulo = "Sugerencias";
             $this->view = "ver_sugerencias";
         }
