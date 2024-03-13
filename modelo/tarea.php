@@ -353,10 +353,30 @@
             $stmt->bind_result($archivo);
             $stmt->fetch();
             $stmt->close();
-        
+            
             return $archivo;
         }
+
+        /**
+         * Método para obtener la tarea con la fecha más próxima.
+         * 
+         * Busca la tarea cuya fecha sea la más próxima a la actual y la devuelve.
+         */
+        public function obtenerTareaFechaProxima($idUsuario) {
+            $sql = "SELECT idTar, titulo, detalle, fecha FROM tareas WHERE idUsuario = ? AND fecha IS NOT NULL AND fecha >= CURDATE() ORDER BY fecha ASC LIMIT 1";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("i", $idUsuario);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+            $tarea = $resultado->fetch_assoc();
         
+            // Si hay una tarea encontrada, también se obtienen sus subtareas
+            if ($tarea) {
+                $tarea['subtareas'] = $this->obtener_subtareas($tarea['idTar']);
+            }
+        
+            return $tarea;
+        }
     }
 
 ?>

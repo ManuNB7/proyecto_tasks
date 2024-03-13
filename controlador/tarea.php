@@ -38,37 +38,49 @@
             $this->view = "form_tarea";
         }
         
-        /**
-         * Método para listar las tareas.
-         */
         public function listar_tarea() {
             $this->authController->checkSession();
             if (isset($_SESSION['user_id'])) {
                 $idUsuario = $_SESSION['user_id'];
+                // Buscar la tarea con la fecha de entrega más cercana
+                $tareaCercana = $this->modelo->obtenerTareaFechaProxima($idUsuario); // Este método debería devolver la tarea con la fecha de entrega más cercana
+                // Guardar la ID y la fecha de la tarea más cercana en una cookie
+                if ($tareaCercana) {
+                    setcookie('tarea_cercana_id', $tareaCercana['idTar'], time() + (86400 * 30), "/"); // Cookie válida por 30 días
+                    setcookie('tarea_cercana_fecha', $tareaCercana['fecha'], time() + (86400 * 30), "/"); // Cookie válida por 30 días
+                }
                 
                 $this->titulo = "Listar tareas";
                 $this->view = "menu_listar";
-
                 return $this->modelo->listar_tareas($idUsuario);
             } else {
                 header("Location: index.php?controller=sesion&action=mostrar_inicio_sesion");
                 exit();
             }
         }
-        
+
         /**
-         * Método para ver una tarea específica.
+         * Método para listar las tareas.
          */
         public function ver_tarea() {
             $this->authController->checkSession();
-        
+            // Guardar la ID de la tarea consultada en una cookie, última tarea visitada
+            $idTarea = isset($_GET['id']) ? $_GET['id'] : null;
+            setcookie('ultima_tarea_consultada', $idTarea, time() + (86400 * 30), "/"); // Cookie válida por 30 días
+            
             $this->titulo = "Listar tareas";
             $this->view = "ver_tarea";
-            $idTarea = isset($_GET['id']) ? $_GET['id'] : null;
-
+            
             return $this->modelo->obtener_tarea_por_id($idTarea);
         }
-
+        
+        public function ver_sugerencias() {
+            $this->authController->checkSession();        
+            // Establecer el título y la vista
+            $this->titulo = "Sugerencias";
+            $this->view = "ver_sugerencias";
+        }
+        
         /************GUARDAR TAREAS Y SUBTAREAS************/
         /**
          * Método para guardar una tarea principal.
@@ -383,7 +395,6 @@
         }
         
         /************BORRAR TAREAS************/
-        
         /**
          * Método para mostrar el formulario de confirmación de borrado de tarea.
          */
