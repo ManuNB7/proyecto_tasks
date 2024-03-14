@@ -78,7 +78,7 @@
             $this->authController->checkSession();
 
             $datos_tarea = array();
-            // Verificar si la cookie 'ultima_tarea_consultada' está presente
+            // Verificar si la cookie ultima_tarea_consultada está presente
             if (isset($_COOKIE['ultima_tarea_consultada'])) {
                 // Obtener el ID de la última tarea consultada de la cookie
                 $idTarea = $_COOKIE['ultima_tarea_consultada'];

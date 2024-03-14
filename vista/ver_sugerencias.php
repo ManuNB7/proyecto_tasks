@@ -7,6 +7,7 @@
     <?php if(isset($datos['fecha'])): ?>
         <p>Fecha: <?php echo date('d/m/Y', strtotime($datos['fecha'])); ?></p>
     <?php endif; ?>
+    <a href="index.php?controller=tarea&action=ver_tarea&id=<?php echo $datos['id']; ?>" class="boton-forms">Ver tarea</a>
 <?php else: ?>
     <p>No hay información disponible sobre la última tarea consultada.</p>
 <?php endif; ?>
