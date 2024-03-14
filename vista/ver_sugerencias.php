@@ -1,15 +1,14 @@
 <h1>Sugerencias</h1>
 
-<?php if(isset($_COOKIE['ultima_tarea_consultada'])): ?>
-    <?php
-    $ultimaTareaConsultada = $_COOKIE['ultima_tarea_consultada'];
-    ?>
-    <h2>Última tarea consultada:</h2>
-    <p>ID de la tarea: <?php echo $ultimaTareaConsultada; ?></p>
-    <!-- Aquí podrías agregar más detalles de la última tarea consultada si lo deseas -->
-    <a href="index.php?controller=tarea&action=ver_tarea&id=<?php echo $ultimaTareaConsultada; ?>" class="boton-forms">Ver tarea</a>
+<?php if(isset($datos['titulo'])): ?>
+    <h2>Datos de la última tarea consultada:</h2>
+    <p>Título: <?php echo $datos['titulo']; ?></p>
+    <p>Detalle: <?php echo $datos['detalle']; ?></p>
+    <?php if(isset($datos['fecha'])): ?>
+        <p>Fecha: <?php echo date('d/m/Y', strtotime($datos['fecha'])); ?></p>
+    <?php endif; ?>
 <?php else: ?>
-    <p>No hay información sobre la última tarea consultada.</p>
+    <p>No hay información disponible sobre la última tarea consultada.</p>
 <?php endif; ?>
 
 <?php if(isset($_COOKIE['tarea_cercana_id']) && isset($_COOKIE['tarea_cercana_fecha'])): ?>
@@ -19,8 +18,9 @@
     ?>
     <h2>Tarea más cercana:</h2>
     <p>ID de la tarea: <?php echo $tareaCercanaId; ?></p>
-    <p>Fecha de entrega: <?php echo $tareaCercanaFecha; ?></p>
-    <!-- Aquí podrías agregar más detalles de la tarea más cercana si lo deseas -->
+    <?php if(isset($tareaCercanaFecha)): ?>
+        <p>Fecha de entrega: <?php echo date('d/m/Y', strtotime($tareaCercanaFecha)); ?></p>
+    <?php endif; ?>
     <a href="index.php?controller=tarea&action=ver_tarea&id=<?php echo $tareaCercanaId; ?>" class="boton-forms">Ver tarea</a>
 <?php else: ?>
     <p>No hay información sobre la tarea más cercana.</p>

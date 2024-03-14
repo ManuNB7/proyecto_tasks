@@ -75,9 +75,30 @@
         }
         
         public function ver_sugerencias() {
-            $this->authController->checkSession();        
-            $this->titulo = "Sugerencias";
+            $this->authController->checkSession();
+
+            $datos_tarea = array();
+            // Verificar si la cookie 'ultima_tarea_consultada' está presente
+            if (isset($_COOKIE['ultima_tarea_consultada'])) {
+                // Obtener el ID de la última tarea consultada de la cookie
+                $idTarea = $_COOKIE['ultima_tarea_consultada'];
+                $tarea = $this->modelo->obtener_tarea_por_id($idTarea);
+                
+                if ($tarea) {
+                    // datos de la tarea
+                    $datos_tarea = array(
+                        "id" => $tarea['idTar'],
+                        "titulo" => $tarea['titulo'],
+                        "detalle" => $tarea['detalle'],
+                        "fecha" => $tarea['fecha']
+                    );
+                }
+            }
+
+            $this->titulo = "Listar tareas";
             $this->view = "ver_sugerencias";
+        
+            return $datos_tarea;
         }
         
         /************GUARDAR TAREAS Y SUBTAREAS************/

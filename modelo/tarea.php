@@ -369,14 +369,10 @@
             $stmt->execute();
             $resultado = $stmt->get_result();
             $tarea = $resultado->fetch_assoc();
-        
-            // Si hay una tarea encontrada, también se obtienen sus subtareas
-            if ($tarea) {
-                $tarea['subtareas'] = $this->obtener_subtareas($tarea['idTar']);
-            }
-        
+
             return $tarea;
         }
+        
     }
 
 ?>
